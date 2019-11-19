@@ -1,9 +1,18 @@
-const path = require('path')
-const { pathToFileURL } = require('url')
 const puppeteer = require('puppeteer')
-const { error, logRaw, logWrite } = require('./log')
+const { log, error, logRaw, logWrite } = require('./log')
 
-async function run (outputDir, timeout) {
+function run (outputDir, port, timeout, mode) {
+  return new Promise((resolve, reject) => {
+    return _run(outputDir, port, timeout, mode, (err) => {
+      if (err) {
+        return reject(err)
+      }
+      resolve()
+    })
+  })
+}
+
+async function _run (outputDir, port, timeout, mode, callback) {
   let executionQueue = Promise.resolve()
 
   const browser = await puppeteer.launch()
@@ -21,8 +30,8 @@ async function run (outputDir, timeout) {
     lastCall = setTimeout(() => {
       executionQueue.then(() => {
         executionQueue = null
-        browser.close()
-      })
+        return browser.close()
+      }).then(callback).catch(callback)
     }, 100)
   }
 
@@ -61,12 +70,14 @@ async function run (outputDir, timeout) {
     maybeEnd()
   })
 
-  await page.goto(pathToFileURL(path.join(process.cwd(), outputDir, 'index.html')).toString())
+  const url = `http://localhost:${port}/?${mode}`
+  log(`Loading tests via ${url}`)
+  await page.goto(url)
 
   setTimeout(() => {
-    error(`Error, timeout: tests did not finish cleanly after ${timeout} seconds`)
-    browser.close()
-    process.exit(1)
+    const err = new Error(`timeout: tests did not finish cleanly after ${timeout} seconds`)
+    const cb = () => callback(err)
+    browser.close().then(cb).catch(cb)
   }, timeout * 1000).unref()
 }
 

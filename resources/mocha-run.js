@@ -9,7 +9,6 @@ function consoleLog (...args) {
 }
 
 function runWorker () {
-  console.log('starting worker')
   const worker = new Worker('mocha-run.js')
   worker.addEventListener('message', (msg) => {
     if (!Array.isArray(msg.data)) {
@@ -37,7 +36,7 @@ if (inWorker) {
     postMessage(['polendinaEnd'].concat(args))
   }
 
-  polendinaLog('running')
+  polendinaLog('Running in worker')
   importScripts('bundle.js')
 }
 
