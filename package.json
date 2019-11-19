@@ -6,7 +6,8 @@
   "dependencies": {
     "ansi-colors": "^4.1.1",
     "glob": "^7.1.6",
-    "puppeteer": "^2.0.0",
+    "puppeteer": "~2.0.0",
+    "st": "~2.0.0",
     "strip-ansi": "^6.0.0",
     "webpack": "^4.41.2",
     "yargs": "^15.0.1"
