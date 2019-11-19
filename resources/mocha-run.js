@@ -68,9 +68,12 @@ if (!inPageLoadingWorker || inWorker) {
   }
 
   setTimeout(() => {
-    mocha.run().on('end', () => {
-      executionQueue.then(polendinaEnd)
-    })
+    let errors = 0
+    mocha
+      .run((_errors) => { errors = _errors })
+      .on('end', (...args) => {
+        executionQueue.then(polendinaEnd.bind(null, errors))
+      })
   }, 0)
 } else if (inPageLoadingWorker) {
   runWorker()

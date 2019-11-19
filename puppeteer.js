@@ -3,11 +3,11 @@ const { log, error, logRaw, logWrite } = require('./log')
 
 function run (outputDir, port, timeout, mode) {
   return new Promise((resolve, reject) => {
-    return _run(outputDir, port, timeout, mode, (err) => {
+    _run(outputDir, port, timeout, mode, (err, errors) => {
       if (err) {
         return reject(err)
       }
-      resolve()
+      resolve(errors)
     })
   })
 }
@@ -26,12 +26,14 @@ async function _run (outputDir, port, timeout, mode, callback) {
   // waiting for stream delays, not test delays at that point.
   let lastCall
 
-  function end () {
+  function end (errors) {
     lastCall = setTimeout(() => {
       executionQueue.then(() => {
         executionQueue = null
         return browser.close()
-      }).then(callback).catch(callback)
+      })
+        .catch(callback)
+        .then(() => { callback(null, errors) })
     }, 100)
   }
 
@@ -58,8 +60,8 @@ async function _run (outputDir, port, timeout, mode, callback) {
     maybeEnd()
   })
 
-  await page.exposeFunction('polendinaEnd', () => {
-    end()
+  await page.exposeFunction('polendinaEnd', (errors) => {
+    end(errors)
   })
   await page.exposeFunction('polendinaLog', (args) => {
     logRaw(args)

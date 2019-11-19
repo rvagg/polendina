@@ -5,6 +5,9 @@
 > Geppetto had a very bad temper. Woe to the one who called him Polendina! He became as wild as a beast and no one could soothe him.
 
 
+## Usage
+
+`polendina --output-dir=<build directory> --test-files=<file list glob>
 
 ## License and Copyright
 

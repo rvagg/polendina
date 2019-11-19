@@ -6,18 +6,19 @@ module.exports = function (env, argv) {
     throw new Error('no --output-dir specified')
   }
 
-  if (!argv.testFiles) {
+  if (!argv._) {
     throw new Error('no --test-files specified')
   }
 
-  const testFiles = [] // require.resolve('./mocha-overrides')]
-    .concat(glob.sync(argv['test-files'], { absolute: true }))
+  const testFiles = argv._.reduce((p, c) => {
+    return p.concat(glob.sync(c, { absolute: true }))
+  }, [])
 
   return {
     mode: 'development',
     entry: testFiles,
     output: {
-      path: path.join(process.cwd(), argv.outputDir),
+      path: path.resolve(process.cwd(), argv.outputDir),
       filename: 'bundle.js'
     },
     devtool: 'cheap-module-source-map',
@@ -44,7 +45,7 @@ module.exports = function (env, argv) {
             {
               loader: require.resolve('../mocha-loader.js'), // 'mocha-loader',
               options: {
-                reporter: 'spec'
+                reporter: argv.expressReporter || 'spec'
               }
             }
           ]
