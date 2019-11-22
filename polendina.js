@@ -7,11 +7,18 @@ const http = require('http')
 const st = require('st')
 const rimraf = promisify(require('rimraf'))
 const webpack = promisify(require('webpack'))
-const puppeteer = require('./puppeteer')
-const { log } = require('./log')
+const puppeteer = require('./lib/puppeteer')
+const { log } = require('./lib/log')
 
 const argv = require('yargs')
   .usage('$0 testfile.js [testfile2.js [tests/**/test*.js ...] ]')
+  .option('runner', {
+    alias: 'r',
+    type: 'string',
+    describe: 'The test runner to use',
+    choices: ['mocha', 'tape'],
+    default: 'mocha'
+  })
   .option('output-dir', {
     type: 'string',
     describe: 'Location for temporary build resources',
@@ -27,6 +34,11 @@ const argv = require('yargs')
     describe: 'Run tests in a WebWorker',
     default: false
   })
+  .option('stats', {
+    type: 'boolean',
+    describe: 'Write webpack-stats.json with bundle',
+    default: false
+  })
   .option('cleanup', {
     type: 'boolean',
     describe: 'Remove the output-dir after execution',
@@ -37,9 +49,9 @@ const argv = require('yargs')
     describe: 'Number of seconds to wait before auto-failing the test suite',
     default: 30
   })
-  .option('express-reporter', {
+  .option('mocha-reporter', {
     type: 'string',
-    describe: 'Specify the Express reporter',
+    describe: 'Specify the Mocha reporter',
     requiresArg: true
   })
   .help('help')
@@ -58,7 +70,7 @@ const argv = require('yargs')
   })
   .argv
 
-const webpackConfig = require('./resources/webpack.config')(process.env, argv)
+const webpackConfig = require('./lib/webpack.config')(process.env, argv)
 
 async function run () {
   const outputDir = path.resolve(process.cwd(), argv.outputDir)
@@ -70,12 +82,12 @@ async function run () {
   log(`Setting up output directory: ${outputDir} ...`)
 
   await fs.mkdir(outputDir, { recursive: true })
-  await Promise.all(['index.html', 'mocha-run.js'].map((file) => {
+  const copyFiles = ['index.html', 'test-registry.js', 'page-run.js', 'bundle-run.js']
+  await Promise.all(copyFiles.map((file) => {
     return fs.copyFile(path.join(__dirname, 'resources', file), path.join(outputDir, file))
   }))
 
   const stats = await webpack(webpackConfig)
-
   const info = stats.toJson()
 
   if (stats.hasErrors()) {
@@ -89,10 +101,11 @@ async function run () {
 
   log(`Created bundle: ${path.join(outputDir, info.assetsByChunkName.main[0])} ...`)
 
-  const statsFile = path.join(webpackConfig.output.path, 'webpack-stats.json')
-  await fs.writeFile(statsFile, JSON.stringify(info), 'utf8')
-
-  log(`Wrote: ${statsFile} ...`)
+  if (argv.stats) {
+    const statsFile = path.join(webpackConfig.output.path, 'webpack-stats.json')
+    await fs.writeFile(statsFile, JSON.stringify(info), 'utf8')
+    log(`Wrote: ${statsFile} ...`)
+  }
 
   async function cleanup () {
     if (argv.cleanup) {
@@ -120,7 +133,7 @@ async function run () {
 }
 
 function execute (outputDir, timeout, mode) {
-  log(`Running ${mode} tests with Puppeteer ...`)
+  log(`Running ${argv.runner} ${mode} tests with Puppeteer ...`)
 
   const mount = st({ path: outputDir, index: 'index.html' })
   return new Promise((resolve, reject) => {
@@ -132,8 +145,11 @@ function execute (outputDir, timeout, mode) {
     })
     server.on('error', reject)
     server.listen(() => {
-      puppeteer(argv.outputDir, server.address().port, timeout, mode)
+      puppeteer(argv.outputDir, server.address().port, timeout, mode, argv.runner)
         .then((errors) => {
+          if (argv.runner === 'tape') {
+            log()
+          }
           server.close(() => {
             resolve(errors)
           })

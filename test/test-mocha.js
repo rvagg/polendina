@@ -2,24 +2,10 @@
 
 const assert = require('assert')
 const path = require('path')
-const { exec } = require('child_process')
-const cli = path.join(__dirname, '../cli.js')
+const { runCli } = require('./common')
 
 const mochaFixture = path.join(__dirname, 'fixtures/mocha')
 const mochaFailureFixture = path.join(__dirname, 'fixtures/mocha-failure')
-
-async function runCli (cwd, args) {
-  return new Promise((resolve, reject) => {
-    exec(`${cli} test.js --cleanup ${args || ''}`, { cwd }, (err, stdout, stderr) => {
-      try {
-        assert.strictEqual(stderr.toString(), '', 'no stderr')
-      } catch (e) {
-        return reject(e)
-      }
-      resolve({ stdout: stdout.toString(), code: err ? err.code : 0 })
-    })
-  })
-}
 
 function removeTimings (stdout) {
   return stdout.replace(/\(\d+ms\)/g, '(Xms)')
@@ -45,7 +31,7 @@ describe('basic mocha', function () {
 `
 
     assert.ok(stdout.includes(expected), 'stdout contains expected test output')
-    assert.ok(stdout.includes('Running page tests with Puppeteer'), 'stdout contains expected output for running in page')
+    assert.ok(stdout.includes('Running mocha page tests with Puppeteer'), 'stdout contains expected output for running in page')
   })
 
   it('should run in worker', async () => {
@@ -65,7 +51,7 @@ describe('basic mocha', function () {
 `
 
     assert.ok(stdout.includes(expected), 'stdout contains expected test output')
-    assert.ok(stdout.includes('Running worker tests with Puppeteer'), 'stdout contains expected output for running in worker')
+    assert.ok(stdout.includes('Running mocha worker tests with Puppeteer'), 'stdout contains expected output for running in worker')
   })
 
   it('should run in page and worker', async () => {
@@ -85,7 +71,7 @@ describe('basic mocha', function () {
 `
 
     assert.ok(stdout.includes(expected), 'stdout contains expected test output')
-    assert.ok(stdout.includes('Running page tests with Puppeteer'), 'stdout contains expected output for running in page')
+    assert.ok(stdout.includes('Running mocha page tests with Puppeteer'), 'stdout contains expected output for running in page')
 
     expected = `
   test suite 1
@@ -101,7 +87,7 @@ describe('basic mocha', function () {
 `
 
     assert.ok(stdout.includes(expected), 'stdout contains expected test output')
-    assert.ok(stdout.includes('Running worker tests with Puppeteer'), 'stdout contains expected output for running in worker')
+    assert.ok(stdout.includes('Running mocha worker tests with Puppeteer'), 'stdout contains expected output for running in worker')
   })
 })
 
@@ -126,7 +112,7 @@ describe('failing mocha', function () {
 `
 
     assert.ok(stdout.includes(expected), 'stdout contains expected test output')
-    assert.ok(stdout.includes('Running page tests with Puppeteer'), 'stdout contains expected output for running in worker')
+    assert.ok(stdout.includes('Running mocha page tests with Puppeteer'), 'stdout contains expected output for running in worker')
   })
 
   it('should fail in worker', async () => {
@@ -147,7 +133,7 @@ describe('failing mocha', function () {
 `
 
     assert.ok(stdout.includes(expected), 'stdout contains expected test output')
-    assert.ok(stdout.includes('Running worker tests with Puppeteer'), 'stdout contains expected output for running in worker')
+    assert.ok(stdout.includes('Running mocha worker tests with Puppeteer'), 'stdout contains expected output for running in worker')
   })
 
   it('should fail in worker and not run in page', async () => {
@@ -171,7 +157,7 @@ describe('failing mocha', function () {
     assert.ok(found > -1, 'stdout contains expected test output')
     found = stdout.indexOf(expected, found + 1)
     assert.ok(found === -1, 'stdout doesn\'t contain second instance of expected test output')
-    assert.ok(stdout.includes('Running page tests with Puppeteer'), 'stdout contains expected output for running in page')
-    assert.ok(!stdout.includes('Running worker tests with Puppeteer'), 'stdout doesn\'t contain expected output for running in worker')
+    assert.ok(stdout.includes('Running mocha page tests with Puppeteer'), 'stdout contains expected output for running in page')
+    assert.ok(!stdout.includes('Running mocha worker tests with Puppeteer'), 'stdout doesn\'t contain expected output for running in worker')
   })
 })

@@ -2,11 +2,11 @@
   "name": "polendina",
   "version": "1.0.0",
   "description": "Run Node.js library tests in headless Chrome using Puppeteer",
-  "main": "cli.js",
+  "main": "polendina.js",
   "dependencies": {
     "ansi-colors": "^4.1.1",
     "glob": "^7.1.6",
-    "puppeteer": "~2.0.0",
+    "puppeteer": "^2.0.0",
     "rimraf": "^3.0.0",
     "st": "~2.0.0",
     "strip-ansi": "^6.0.0",
@@ -14,13 +14,14 @@
     "yargs": "^15.0.1"
   },
   "bin": {
-    "polendina": "./cli.js"
+    "polendina": "./polendina.js"
   },
   "devDependencies": {
-    "mocha": "~6.2.2"
+    "mocha": "~6.2.2",
+    "tape": "^4.11.0"
   },
   "scripts": {
-    "test": "mocha test/test.js"
+    "test": "mocha test/test-*.js"
   },
   "repository": {
     "type": "git",

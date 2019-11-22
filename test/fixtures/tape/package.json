@@ -1,14 +1,14 @@
 {
-  "name": "polendina-test-fixture-mocha",
+  "name": "polendina-test-fixture-tape",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "mocha test.js"
+    "test": "tape test.js"
   },
   "author": "Rod <rod@vagg.org> (http://r.va.gg/)",
   "license": "Apache-2.0",
   "devDependencies": {
-    "mocha": "~6.2.2"
+    "tape": "^4.11.0"
   }
 }
