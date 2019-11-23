@@ -5,7 +5,7 @@ const cli = path.join(__dirname, '../polendina.js')
 
 async function runCli (cwd, args) {
   return new Promise((resolve, reject) => {
-    args = `${cli} test.js --cleanup ${args || ''}`.split(' ').filter(Boolean)
+    args = `${cli} test*.js --cleanup ${args || ''}`.split(' ').filter(Boolean)
     execFile(process.execPath, args, { cwd }, (err, stdout, stderr) => {
       try {
         assert.strictEqual(stderr.toString(), '', 'no stderr')
