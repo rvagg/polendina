@@ -34,6 +34,11 @@ const argv = require('yargs')
     describe: 'Run tests in a WebWorker',
     default: false
   })
+  .option('serviceworker', {
+    type: 'boolean',
+    describe: 'Run tests in a ServiceWorker',
+    default: false
+  })
   .option('stats', {
     type: 'boolean',
     describe: 'Write webpack-stats.json with bundle',
@@ -57,8 +62,8 @@ const argv = require('yargs')
   .help('help')
   .demandCommand(1, 'You must supply at least one test file')
   .check((argv) => {
-    if (!argv.page && !argv.worker) {
-      throw new Error('No mode specified, use one or more of `--page`, `--worker`')
+    if (!argv.page && !argv.worker && !argv.serviceworker) {
+      throw new Error('No mode specified, use one or more of `--page`, `--worker`, `--serviceworker`')
     }
     if (argv.timeout <= 0) {
       throw new Error(`Invalid timeout value (${argv.timeout})`)
@@ -76,7 +81,8 @@ async function run () {
   const outputDir = path.resolve(process.cwd(), argv.outputDir)
   const mode = {
     page: argv.page,
-    worker: argv.worker
+    worker: argv.worker,
+    serviceworker: argv.serviceworker
   }
 
   log(`Setting up output directory: ${outputDir} ...`)
@@ -114,22 +120,20 @@ async function run () {
     }
   }
 
-  if (mode.page) {
-    const errors = await execute(outputDir, argv.timeout, 'page')
-    if (errors) {
-      await cleanup()
-      return process.exit(errors)
-    }
-  }
-  if (mode.worker) {
-    const errors = await execute(outputDir, argv.timeout, 'worker')
-    if (errors) {
-      await cleanup()
-      return process.exit(errors)
+  let errors
+  for (const m of ['page', 'worker', 'serviceworker']) {
+    if (mode[m]) {
+      errors = await execute(outputDir, argv.timeout, m)
+      if (errors) {
+        break
+      }
     }
   }
 
   await cleanup()
+  if (errors) {
+    return process.exit(errors)
+  }
 }
 
 function execute (outputDir, timeout, mode) {

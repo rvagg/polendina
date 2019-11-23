@@ -1,0 +1,14 @@
+{
+  "name": "polendina-test-fixture-tape",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "tape test.js"
+  },
+  "author": "Rod <rod@vagg.org> (http://r.va.gg/)",
+  "license": "Apache-2.0",
+  "devDependencies": {
+    "tape": "^4.11.0"
+  }
+}

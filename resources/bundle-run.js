@@ -1,14 +1,16 @@
-/* globals mocha Mocha WorkerGlobalScope */
+/* globals mocha Mocha WorkerGlobalScope ServiceWorkerGlobalScope clients */
 
 const registry = require('./test-registry')
 const inPage =
   typeof window !== 'undefined' &&
   window.location &&
   typeof WorkerGlobalScope === 'undefined'
-const inWorker = !inPage &&
+const inServiceWorker = !inPage &&
+  typeof ServiceWorkerGlobalScope !== 'undefined' &&
+  global instanceof ServiceWorkerGlobalScope
+const inWorker = !inPage && !inServiceWorker &&
   typeof WorkerGlobalScope !== 'undefined' &&
   global instanceof WorkerGlobalScope
-const _consoleLog = console ? console.log : () => {}
 let executionQueue = Promise.resolve()
 
 function consoleLog (...args) {
@@ -26,6 +28,26 @@ function setupWorkerGlobals () {
 
   global.polendinaEnd = async function (...args) {
     global.postMessage(['polendinaEnd'].concat(args))
+  }
+}
+
+function setupServiceWorkerGlobals () {
+  async function _postMessage (msg) {
+    for (const client of await clients.matchAll()) {
+      client.postMessage(msg)
+    }
+  }
+
+  global.polendinaLog = async function (...args) {
+    _postMessage(['polendinaLog'].concat(args))
+  }
+
+  global.polendinaWrite = async function (...args) {
+    _postMessage(['polendinaWrite'].concat(args))
+  }
+
+  global.polendinaEnd = async function (...args) {
+    _postMessage(['polendinaEnd'].concat(args))
   }
 }
 
@@ -101,12 +123,24 @@ function runMocha () {
     })
 }
 
-if (inWorker) {
-  setupWorkerGlobals()
+async function start () {
+  if (inWorker) {
+    setupWorkerGlobals()
+  } else if (inServiceWorker) {
+    await new Promise((resolve, reject) => {
+      global.addEventListener('activate', (event) => {
+        event.waitUntil(global.clients.claim())
+        setupServiceWorkerGlobals()
+        resolve()
+      })
+    })
+  }
+
+  if (registry.argv.runner === 'tape') {
+    runTape()
+  } else if (registry.argv.runner === 'mocha') {
+    runMocha()
+  }
 }
 
-if (registry.argv.runner === 'tape') {
-  runTape()
-} else if (registry.argv.runner === 'mocha') {
-  runMocha()
-}
+start()

@@ -13,23 +13,23 @@ function removeTimings (stdout) {
 
 describe('basic mocha', function () {
   this.timeout(20000)
-
-  it('should run in page', async () => {
-    const { stdout, code } = await runCli(mochaFixture)
-    assert.strictEqual(code, 0, 'exited with zero exit code')
-    const expected = `
+  const expectedTemplate = `
   test suite 1
     ✓ test case 1
     ✓ test case 2
 
   test suite 2 - worker
-    ✓ is not in worker
+    ✓ is WORKER
 
   test suite 3
     ✓ test case 1
     ✓ test case 2
 `
 
+  it('should run in page', async () => {
+    const { stdout, code } = await runCli(mochaFixture)
+    assert.strictEqual(code, 0, 'exited with zero exit code')
+    const expected = expectedTemplate.replace(/WORKER/, 'not in worker')
     assert.ok(stdout.includes(expected), 'stdout contains expected test output')
     assert.ok(stdout.includes('Running mocha page tests with Puppeteer'), 'stdout contains expected output for running in page')
   })
@@ -37,80 +37,60 @@ describe('basic mocha', function () {
   it('should run in worker', async () => {
     const { stdout, code } = await runCli(mochaFixture, '--worker --page=false')
     assert.strictEqual(code, 0, 'exited with zero exit code')
-    const expected = `
-  test suite 1
-    ✓ test case 1
-    ✓ test case 2
-
-  test suite 2 - worker
-    ✓ is in worker
-
-  test suite 3
-    ✓ test case 1
-    ✓ test case 2
-`
-
+    const expected = expectedTemplate.replace(/WORKER/, 'in worker')
     assert.ok(stdout.includes(expected), 'stdout contains expected test output')
     assert.ok(stdout.includes('Running mocha worker tests with Puppeteer'), 'stdout contains expected output for running in worker')
   })
 
-  it('should run in page and worker', async () => {
-    const { stdout, code } = await runCli(mochaFixture, '--worker')
+  it('should run in serviceworker', async () => {
+    const { stdout, code } = await runCli(mochaFixture, '--serviceworker --page=false')
     assert.strictEqual(code, 0, 'exited with zero exit code')
-    let expected = `
-  test suite 1
-    ✓ test case 1
-    ✓ test case 2
+    const expected = expectedTemplate.replace(/WORKER/, 'in serviceworker')
+    assert.ok(stdout.includes(expected), 'stdout contains expected test output')
+    assert.ok(stdout.includes('Running mocha serviceworker tests with Puppeteer'), 'stdout contains expected output for running in worker')
+  })
 
-  test suite 2 - worker
-    ✓ is not in worker
+  it('should run in page, worker and serviceworker', async () => {
+    const { stdout, code } = await runCli(mochaFixture, '--worker --serviceworker')
+    assert.strictEqual(code, 0, 'exited with zero exit code')
 
-  test suite 3
-    ✓ test case 1
-    ✓ test case 2
-`
-
+    let expected = expectedTemplate.replace(/WORKER/, 'not in worker')
     assert.ok(stdout.includes(expected), 'stdout contains expected test output')
     assert.ok(stdout.includes('Running mocha page tests with Puppeteer'), 'stdout contains expected output for running in page')
 
-    expected = `
-  test suite 1
-    ✓ test case 1
-    ✓ test case 2
-
-  test suite 2 - worker
-    ✓ is in worker
-
-  test suite 3
-    ✓ test case 1
-    ✓ test case 2
-`
-
+    expected = expectedTemplate.replace(/WORKER/, 'in worker')
     assert.ok(stdout.includes(expected), 'stdout contains expected test output')
     assert.ok(stdout.includes('Running mocha worker tests with Puppeteer'), 'stdout contains expected output for running in worker')
+
+    expected = expectedTemplate.replace(/WORKER/, 'in serviceworker')
+    assert.ok(stdout.includes(expected), 'stdout contains expected test output')
+    assert.ok(stdout.includes('Running mocha serviceworker tests with Puppeteer'), 'stdout contains expected output for running in worker')
   })
 })
 
 describe('failing mocha', function () {
   this.timeout(20000)
+  const expectedTemplate = `
+  test suite 1 - worker
+    ✓ is WORKER
+
+  test suite 2 - failing
+    1) should fail
+
+
+  1 passing (Xms)
+  1 failing
+
+  1) test suite 2 - failing
+       should fail:
+     Error: failing test
+`
 
   it('should fail in page', async () => {
     let { stdout, code } = await runCli(mochaFailureFixture)
     assert.strictEqual(code, 1, 'exited with non-zero exit code')
     stdout = removeTimings(stdout)
-    const expected = `
-  failing test
-    1) should fail
-
-
-  0 passing (Xms)
-  1 failing
-
-  1) failing test
-       should fail:
-     Error: failing test
-`
-
+    const expected = expectedTemplate.replace(/WORKER/, 'not in worker')
     assert.ok(stdout.includes(expected), 'stdout contains expected test output')
     assert.ok(stdout.includes('Running mocha page tests with Puppeteer'), 'stdout contains expected output for running in worker')
   })
@@ -119,40 +99,25 @@ describe('failing mocha', function () {
     let { stdout, code } = await runCli(mochaFailureFixture, '--worker --page=false')
     assert.strictEqual(code, 1, 'exited with non-zero exit code')
     stdout = removeTimings(stdout)
-    const expected = `
-  failing test
-    1) should fail
-
-
-  0 passing (Xms)
-  1 failing
-
-  1) failing test
-       should fail:
-     Error: failing test
-`
-
+    const expected = expectedTemplate.replace(/WORKER/, 'in worker')
     assert.ok(stdout.includes(expected), 'stdout contains expected test output')
     assert.ok(stdout.includes('Running mocha worker tests with Puppeteer'), 'stdout contains expected output for running in worker')
   })
 
-  it('should fail in worker and not run in page', async () => {
+  it('should fail in serviceworker', async () => {
+    let { stdout, code } = await runCli(mochaFailureFixture, '--serviceworker --page=false')
+    assert.strictEqual(code, 1, 'exited with non-zero exit code')
+    stdout = removeTimings(stdout)
+    const expected = expectedTemplate.replace(/WORKER/, 'in serviceworker')
+    assert.ok(stdout.includes(expected), 'stdout contains expected test output')
+    assert.ok(stdout.includes('Running mocha serviceworker tests with Puppeteer'), 'stdout contains expected output for running in worker')
+  })
+
+  it('should fail in page and not run in worker', async () => {
     let { stdout, code } = await runCli(mochaFailureFixture, '--worker')
     assert.strictEqual(code, 1, 'exited with non-zero exit code')
     stdout = removeTimings(stdout)
-    const expected = `
-  failing test
-    1) should fail
-
-
-  0 passing (Xms)
-  1 failing
-
-  1) failing test
-       should fail:
-     Error: failing test
-`
-
+    const expected = expectedTemplate.replace(/WORKER/, 'not in worker')
     let found = stdout.indexOf(expected)
     assert.ok(found > -1, 'stdout contains expected test output')
     found = stdout.indexOf(expected, found + 1)

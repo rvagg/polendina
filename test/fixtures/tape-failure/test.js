@@ -1,21 +1,8 @@
 /* globals WorkerGlobalScope ServiceWorkerGlobalScope */
 
 const tape = require('tape')
-const fixture = require('./')
 
-tape('test suite 1', (t) => {
-  t.test('test case 1', (t) => {
-    t.strictEqual(fixture, 'polendina test')
-    t.end()
-  })
-
-  t.test('test case 2', (t) => {
-    t.ok(true, 'all good')
-    t.end()
-  })
-})
-
-tape('test suite 2 - worker', (t) => {
+tape('test suite 1 - worker', (t) => {
   if (typeof ServiceWorkerGlobalScope !== 'undefined' && global instanceof ServiceWorkerGlobalScope) {
     t.test('is in serviceworker', (t) => {
       t.strictEqual(typeof ServiceWorkerGlobalScope, 'function')
@@ -34,14 +21,9 @@ tape('test suite 2 - worker', (t) => {
   }
 })
 
-tape('test suite 3', (t) => {
+tape('test suite 2 - failure', (t) => {
   t.test('test case 1', (t) => {
-    t.strictEqual(fixture, 'polendina test')
-    t.end()
-  })
-
-  t.test('test case 2', (t) => {
-    t.ok(true, 'all good')
+    t.fail('bork')
     t.end()
   })
 })
