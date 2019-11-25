@@ -15,17 +15,17 @@ let executionQueue = Promise.resolve()
 
 const log = {
   info: (...args) => {
-    executionQueue = executionQueue.then(() => global.polendinaLog(args))
+    executionQueue = executionQueue.then(() => global.polendinaLog(['info'].concat(args)))
     return executionQueue
   },
   // TODO
   warn: (...args) => {
-    executionQueue = executionQueue.then(() => global.polendinaLog(args))
+    executionQueue = executionQueue.then(() => global.polendinaLog(['warn'].concat(args)))
     return executionQueue
   },
   // TODO
   error: (...args) => {
-    executionQueue = executionQueue.then(() => global.polendinaLog(args))
+    executionQueue = executionQueue.then(() => global.polendinaLog(['error'].concat(args)))
     return executionQueue
   }
 }
