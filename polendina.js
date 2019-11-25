@@ -16,7 +16,7 @@ const argv = require('yargs')
     alias: 'r',
     type: 'string',
     describe: 'The test runner to use',
-    choices: ['mocha', 'tape'],
+    choices: ['mocha', 'tape', 'bare-sync'],
     default: 'mocha'
   })
   .option('output-dir', {
@@ -151,7 +151,7 @@ function execute (outputDir, timeout, mode) {
     server.listen(() => {
       puppeteer(argv.outputDir, server.address().port, timeout, mode, argv.runner)
         .then((errors) => {
-          if (argv.runner === 'tape') {
+          if (argv.runner !== 'mocha') {
             log()
           }
           server.close(() => {
