@@ -1,5 +1,7 @@
 #!/usr/bin/env node
 
+const start = Date.now()
+
 const { promisify } = require('util')
 const path = require('path')
 const fs = require('fs').promises
@@ -16,7 +18,7 @@ const argv = require('yargs')
     alias: 'r',
     type: 'string',
     describe: 'The test runner to use',
-    choices: ['mocha', 'tape', 'bare-sync'],
+    choices: ['mocha', 'tape', 'bare-sync', 'bare-async'],
     default: 'mocha'
   })
   .option('output-dir', {
@@ -75,7 +77,17 @@ const argv = require('yargs')
   })
   .argv
 
-const webpackConfig = require('./lib/webpack.config')(process.env, argv)
+const runner = (() => {
+  if (argv.runner === 'mocha') {
+    return 'mocha-run.js'
+  } else if (argv.runner === 'tape') {
+    return 'tape-run.js'
+  } else if (argv.runner.startsWith('bare-')) {
+    return 'bare-run.js'
+  }
+})()
+
+const webpackConfig = require('./lib/webpack.config')(process.env, argv, runner)
 
 async function run () {
   const outputDir = path.resolve(process.cwd(), argv.outputDir)
@@ -88,7 +100,7 @@ async function run () {
   log(`Setting up output directory: ${outputDir} ...`)
 
   await fs.mkdir(outputDir, { recursive: true })
-  const copyFiles = ['index.html', 'test-registry.js', 'page-run.js', 'bundle-run.js']
+  const copyFiles = ['index.html', 'test-registry.js', 'page-run.js', 'common-run.js', runner]
   await Promise.all(copyFiles.map((file) => {
     return fs.copyFile(path.join(__dirname, 'resources', file), path.join(outputDir, file))
   }))
@@ -102,7 +114,9 @@ async function run () {
   }
 
   if (stats.hasWarnings()) {
-    console.warn(info.warnings)
+    for (const warning of info.warnings) {
+      console.warn('Bundling warning: ', warning)
+    }
   }
 
   log(`Created bundle: ${path.join(outputDir, info.assetsByChunkName.main[0])} ...`)
@@ -131,6 +145,15 @@ async function run () {
   }
 
   await cleanup()
+  let time = (Date.now() - start) / 1000
+  if (time > 10) {
+    time = Math.round(time)
+  } else {
+    time = Math.round(time * 10) / 10
+  }
+
+  log(`Took ${time} second${time === 1 ? '' : 's'}`)
+
   if (errors) {
     return process.exit(errors)
   }
