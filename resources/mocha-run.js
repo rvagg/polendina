@@ -1,4 +1,7 @@
 /* globals mocha Mocha */
+
+// in-browser setup and runner for Mocha, at end of bundle
+
 require('mocha/mocha.js')
 const { registry, executionQueue, log, setup } = require('./common-run')
 

@@ -1,3 +1,5 @@
+// in-browser setup and runner for Tape, at end of bundle
+
 const tape = require('tape')
 const { registry, setup, executionQueue } = require('./common-run')
 

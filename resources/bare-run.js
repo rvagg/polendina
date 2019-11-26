@@ -1,3 +1,5 @@
+// in-browser test runner for bare-sync and bare-async, at end of bundle
+
 const { registry, executionQueue, log, setup } = require('./common-run')
 
 async function runBare (exec) {

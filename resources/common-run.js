@@ -73,7 +73,8 @@ function setupLogging () {
   console.log = function (...args) {
     try {
       if (/BrowserStdout.*write/.test(new Error().stack)) {
-        // the BrowserStdout polyfill Mocha ships with that converts process.stdout.write() to console.log()
+        // the BrowserStdout polyfill (Mocha ships with among others) that converts
+        // process.stdout.write() to console.log()
         // so we strip out the extra \n that necessarily inserts
         // args[0] = args[0].replace(/\n$/, '')
         executionQueue(() => global.polendinaWrite(args))

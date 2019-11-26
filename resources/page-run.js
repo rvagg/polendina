@@ -1,5 +1,7 @@
 /* globals self Worker */
 
+// loaded as script file in index.html, determines how to load the bundle
+
 const isWorkerMode = /mode=worker/.test(window.location.search)
 const isServiceWorkerMode = /mode=serviceworker/.test(window.location.search)
 const _consoleLog = console ? console.log : () => {}

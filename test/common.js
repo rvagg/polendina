@@ -1,7 +1,7 @@
 const path = require('path')
 const assert = require('assert')
 const { execFile } = require('child_process')
-const cli = path.join(__dirname, '../polendina.js')
+const cli = path.join(__dirname, '../polendina-cli.js')
 
 async function runCli (cwd, args) {
   return new Promise((resolve, reject) => {

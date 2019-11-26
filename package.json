@@ -1,38 +1,44 @@
 {
   "name": "polendina",
-  "version": "1.0.0",
-  "description": "Run Node.js library tests in headless Chrome using Puppeteer",
+  "version": "0.0.0",
+  "description": "Non-UI browser testing for JavaScript libraries from the command-line",
   "main": "polendina.js",
   "dependencies": {
     "ansi-colors": "^4.1.1",
     "glob": "^7.1.6",
     "puppeteer": "^2.0.0",
-    "raw-loader": "~3.1.0",
+    "raw-loader": "^3.1.0",
     "rimraf": "^3.0.0",
-    "st": "~2.0.0",
+    "st": "^2.0.0",
     "strip-ansi": "^6.0.0",
     "webpack": "^4.41.2",
     "yargs": "^15.0.1"
   },
   "bin": {
-    "polendina": "./polendina.js"
+    "polendina": "./polendina-cli.js"
   },
   "devDependencies": {
-    "mocha": "~6.2.2",
+    "mocha": "^6.2.2",
+    "standard": "^14.3.1",
     "tape": "^4.11.0"
   },
   "scripts": {
-    "test": "mocha test/test-*.js"
+    "lint": "standard",
+    "test": "npm run lint && mocha test/test-*.js"
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/rvagg/polendina.git"
   },
   "keywords": [
-    "mocha",
     "puppeteer",
     "chrome",
-    "tests"
+    "chromium",
+    "mocha",
+    "tape",
+    "tests",
+    "testing",
+    "test"
   ],
   "author": "Rod <rod@vagg.org> (http://r.va.gg/)",
   "license": "Apache-2.0"

@@ -1,4 +1,4 @@
-/* globals describe it WorkerGlobalScope ServiceWorkerGlobalScope */
+/* globals describe it */
 
 const fixture = require('./')
 const assert = require('assert')
