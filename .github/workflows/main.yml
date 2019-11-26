@@ -1,0 +1,26 @@
+name: CI
+
+on: [push, pull_request]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v1
+      with:
+        fetch-depth: 1
+
+    - name: Install
+      uses: ianwalter/puppeteer@master
+      with:
+        entrypoint: npm
+        args: install
+
+    - name: Test
+      uses: ianwalter/puppeteer@master
+      with:
+        entrypoint: npm
+        args: test
