@@ -19,7 +19,6 @@
   * [bare-async](#bare-async)
 * [Minimising Puppeteer's size](#minimising-puppeteers-size)
   * [Global and `npx`](#global-and-npx)
-  * [Docker (for GitHub Actions)](#docker-for-github-actions)
 * [License and Copyright](#license-and-copyright)
 
 ## What and why?
@@ -176,10 +175,6 @@ The first environment variable will tell Puppeteer to not bother downloading its
 Running polendina with npm's [`npx`](https://github.com/npm/npx) tool (i.e. run as `npx polendina ...`) will avoid bloating your node_modules directories. Instead, `npx` will install a copy in your npm cache and run it from there. This can be handy if you have multiple projects using polendina.
 
 If you install polendina as a global (`npm install polendina -g`) then `npx` will even find it from there, avoiding the need to install a copy in the npm cache and you get a `polendina` executable as a bonus.
-
-### Docker (for GitHub Actions)
-
-[ianwalter/puppeteer](https://github.com/ianwalter/puppeteer) is a Docker image that comes with Google Chrome Unstable installed and the appropriate environment variables set. It is intended for use with GitHub Actions to speed up install but the Dockerfile may be useful for local testing. Run polendina inside this container for quicker `npm install` times.
 
 ## License and Copyright
 

@@ -13,14 +13,9 @@ jobs:
       with:
         fetch-depth: 1
 
-    - name: Install
-      uses: ianwalter/puppeteer@master
+    - name: Install and test
+      uses: actions/setup-node@v1
       with:
-        entrypoint: npm
-        args: install
-
-    - name: Test
-      uses: ianwalter/puppeteer@master
-      with:
-        entrypoint: npm
-        args: test
+        node-version: '12.x'
+    - run: npm install
+    - run: npm test
