@@ -35,6 +35,9 @@ class Polendina {
 
     await fs.mkdir(this.outputDir, { recursive: true })
     const copyFiles = ['index.html', 'test-registry.js', 'page-run.js', 'common-run.js', this._runnerModule]
+    if (this._options.runner.startsWith('bare-')) {
+      copyFiles.push('bare.js')
+    }
     await Promise.all(copyFiles.map((file) => {
       return fs.copyFile(path.join(__dirname, 'resources', file), path.join(this.outputDir, file))
     }))

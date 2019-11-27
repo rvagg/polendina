@@ -15,7 +15,8 @@
     "yargs": "^15.0.1"
   },
   "bin": {
-    "polendina": "./polendina-cli.js"
+    "polendina": "./polendina-cli.js",
+    "polendina-node": "./polendina-node-cli.js"
   },
   "devDependencies": {
     "mocha": "^6.2.2",
