@@ -19,6 +19,7 @@
   * [Tape](#tape)
   * [bare-sync](#bare-sync)
   * [bare-async](#bare-async)
+* [`polendina-node`: the minimal Node.js test runner](#polendina-node-the-minimal-nodejs-test-runner)
 * [Minimising Puppeteer's size](#minimising-puppeteers-size)
   * [Global and `npx`](#global-and-npx)
 * [License and Copyright](#license-and-copyright)
