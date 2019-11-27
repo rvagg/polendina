@@ -157,6 +157,23 @@ module.exports.testFail = async () => {
 }
 ```
 
+## `polendina-node`: the minimal Node.js test runner
+
+polendina's `bare-sync` and `bare-async` modes run plain Node.js modules in the browser without the need for a test runner. But if you want to run these types of files in Node.js you may find it difficult to scale when you have many modules.
+
+A `bare-sync` test file is a simple matter of `node file.js` and checking the exit code, but as you increase the number of files, your package.json `"test"` script starts to get out of hand.
+
+A `bare-async` test file requires a custom runner since it uses exported `async` functions. A simple `require('./file').catch((err) { console.error(err); process.exit(1) })` would suffice for a single function exported on a single file but this obviously doesn't scale well and your before long your test runner will become a beast of its own.
+
+To deal with this, polendina also ships with a `polendina-node` command-line test runner to manage these for you:
+
+* `polendina-node bare-sync <test files..>`: Run synchronous tests using a plain require(file) on each test file, with simple progress reporting.
+* `polendina-node bare-async <test files..>`: Run tests by executing exported functions from files as async, with simple progress reporting.
+
+The `bare-sync` runner doesn't use anything exported from the files listed, simply `require()`ing them and checking for `throw`n errors is assumed enough to run them.
+
+The `bare-async` runner will look for `module.exports` as a function or its child properties to be function and will run them as `async` functions (they don't need to actualy be `async` or return a function, they could be exported sync functions). See [bare-async](#bare-async) above for examples.
+
 ## Minimising Puppeteer's size
 
 During install, Puppeteer will download a version of Chromium designed to work with it. This can be quite large (200 - 300 Mb depending on platform). This can be avoided, but you should note the following [caveat from the Puppeteer folks](https://github.com/puppeteer/puppeteer#q-why-doesnt-puppeteer-vxxx-work-with-chromium-vyyy):
@@ -167,7 +184,9 @@ If you are willing to own this risk, you could install a Canary / Unstable versi
 
 ```sh
 export PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
-export PUPPETEER_EXECUTABLE_PATH=/usr/bin/google-chrome-unstable # path to Chrome Canary / Unstable
+# path to Chrome Canary / Chromium Unstable
+export PUPPETEER_EXECUTABLE_PATH="/usr/bin/google-chrome-unstable"
+# on macOS you could use: "/Applications/Google Chrome Canary.app/Contents/MacOS/Google Chrome Canary"
 ```
 
 The first environment variable will tell Puppeteer to not bother downloading its own Chromium, and the second tells it which executable to use instead.
