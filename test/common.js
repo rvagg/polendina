@@ -4,8 +4,12 @@ const { execFile } = require('child_process')
 const cli = path.join(__dirname, '../polendina-cli.js')
 
 async function runCli (cwd, args) {
+  return runCommand(`${cli} test*.js --cleanup ${args || ''}`, cwd)
+}
+
+async function runCommand (command, cwd) {
   return new Promise((resolve, reject) => {
-    args = `${cli} test*.js --cleanup ${args || ''}`.split(' ').filter(Boolean)
+    const args = command.split(' ').filter(Boolean)
     execFile(process.execPath, args, { cwd }, (err, stdout, stderr) => {
       const code = err ? err.code : 0
       if (!code) {
@@ -21,3 +25,4 @@ async function runCli (cwd, args) {
 }
 
 module.exports.runCli = runCli
+module.exports.runCommand = runCommand

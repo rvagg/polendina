@@ -3,6 +3,8 @@
 const start = Date.now()
 const glob = require('glob')
 const path = require('path')
+const stripAnsi = require('strip-ansi')
+const tty = process.stdout.isTTY && process.stderr.isTTY
 const BareRunner = require('./resources/bare')
 const argv = require('yargs')
   .command('bare-sync <test files..>', 'Run synchronous tests using a plain require(file)')
@@ -16,6 +18,15 @@ const argv = require('yargs')
     return true
   })
   .argv
+
+function cleanLog (to) {
+  return (...args) => {
+    if (!tty) {
+      args = args.map((a) => typeof a === 'string' ? stripAnsi(a) : a)
+    }
+    to.apply(null, args)
+  }
+}
 
 async function run () {
   const mode = argv._[0]
@@ -35,8 +46,8 @@ async function run () {
     }
   })
   const log = {
-    error: console.error,
-    info: console.log
+    error: cleanLog(console.error),
+    info: cleanLog(console.log)
   }
   const runner = new BareRunner(log, tests)
   const errors = await runner[mode === 'bare-sync' ? 'runBareSync' : 'runBareAsync']()
