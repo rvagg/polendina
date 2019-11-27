@@ -164,7 +164,7 @@ polendina's `bare-sync` and `bare-async` modes run plain Node.js modules in the 
 
 A `bare-sync` test file is a simple matter of `node file.js` and checking the exit code, but as you increase the number of files, your package.json `"test"` script starts to get out of hand.
 
-A `bare-async` test file requires a custom runner since it uses exported `async` functions. A simple `require('./file').catch((err) { console.error(err); process.exit(1) })` would suffice for a single function exported on a single file but this obviously doesn't scale well and your before long your test runner will become a beast of its own.
+A `bare-async` test file requires a custom runner since it uses exported `async` functions. A simple `require('./file')().catch((err) { console.error(err); process.exit(1) })` would suffice for a single function exported on a single file but this obviously doesn't scale well and your before long your test runner will become a beast of its own.
 
 To deal with this, polendina also ships with a `polendina-node` command-line test runner to manage these for you:
 
