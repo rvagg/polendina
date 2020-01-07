@@ -1,14 +1,18 @@
 {
-  "name": "polendina-test-fixture-mocha",
+  "name": "fixture-mocha",
   "version": "1.0.0",
-  "description": "",
+  "description": "test-fixture",
   "main": "index.js",
   "scripts": {
     "test": "mocha test-*.js"
   },
   "author": "Rod <rod@vagg.org> (http://r.va.gg/)",
   "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/rvagg/polendina.git"
+  },
   "devDependencies": {
-    "mocha": "~6.2.2"
+    "mocha": "^7.0.0"
   }
 }

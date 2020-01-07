@@ -7,7 +7,11 @@ const { registry, executionQueue, log, setup } = require('./common-run')
 
 function runMocha () {
   mocha.setup({ reporter: registry.argv.mochaReporter, ui: 'bdd' })
-  mocha.useColors(true)
+  if (typeof mocha.color === 'function') {
+    mocha.color(true)
+  } else if (typeof mocha.useColors === 'function') {
+    mocha.useColors(true)
+  }
 
   // the well-behaved reporters, like spec, are easy to intercept
   Mocha.reporters.Base.consoleLog = log.info
