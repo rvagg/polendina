@@ -5,6 +5,7 @@ const http = require('http')
 const st = require('st')
 const rimraf = promisify(require('rimraf'))
 const webpack = promisify(require('webpack'))
+const merge = require('webpack-merge')
 const puppeteer = require('./lib/puppeteer')
 
 class Polendina {
@@ -31,7 +32,12 @@ class Polendina {
   }
 
   async build () {
-    const webpackConfig = require('./lib/webpack.config')(process.env, this._options, this._runnerModule)
+    let webpackConfig = require('./lib/webpack.config')(process.env, this._options, this._runnerModule)
+
+    if (this._options.webpackConfig) {
+      const userConfig = require(path.join(process.cwd(), this._options.webpackConfig))
+      webpackConfig = merge.smart(webpackConfig, userConfig)
+    }
 
     await fs.mkdir(this.outputDir, { recursive: true })
     const copyFiles = ['index.html', 'test-registry.js', 'page-run.js', 'common-run.js', this._runnerModule]

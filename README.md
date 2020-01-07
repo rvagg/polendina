@@ -63,6 +63,7 @@ Even though polendina is intended for "non-UI" testing, your tests run in a stan
  * `--stats`: Write webpack-stats.json with bundle; written to the `output-dir` so will be removed if `--cleanup` is specified (default: "false")
  * `--cleanup`: Remove the `output-dir` after execution (default: "false")
  * `--timeout`: Number of seconds to wait before auto-failing the test suite (default: "30")
+ * `--webpack-config`: Supply a path to a webpack.config.js to merge into Polendina's Webpack config (use with caution)
  * `--mocha-reporter`: Specify the Mocha reporter if the test runner is Mocha (default: "spec")
 
 ## Examples

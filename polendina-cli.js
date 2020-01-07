@@ -57,6 +57,11 @@ const argv = require('yargs')
     default: false,
     hidden: true
   })
+  .option('webpack-config', {
+    type: 'string',
+    describe: 'Supply a path to a webpack.config.js to merge into Polendina\'s Webpack config (use with caution)',
+    requiresArg: true
+  })
   .option('mocha-reporter', {
     type: 'string',
     describe: 'Specify the Mocha reporter',

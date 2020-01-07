@@ -12,6 +12,7 @@
     "st": "^2.0.0",
     "strip-ansi": "^6.0.0",
     "webpack": "^4.41.5",
+    "webpack-merge": "^4.2.2",
     "yargs": "^15.1.0"
   },
   "bin": {
@@ -25,8 +26,9 @@
   },
   "scripts": {
     "lint": "standard",
-    "test:install": "for f in $(cd test/fixtures/; ls); do (cd test/fixtures/$f && grep devDependencies package.json > /dev/null && npm i --no-audit --no-fund); done",
-    "test": "npm run lint && npm run test:install && mocha test/test-*.js"
+    "test:install": "for f in $(cd test/fixtures/; ls); do (cd test/fixtures/$f && grep devDependencies package.json > /dev/null && npm i --no-audit --no-fund --no-package-lock) || true; done",
+    "test:run": "mocha test/test-*.js",
+    "test": "npm run lint && npm run test:install && npm run test:run"
   },
   "repository": {
     "type": "git",
