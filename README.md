@@ -19,9 +19,10 @@
   * [Tape](#tape)
   * [bare-sync](#bare-sync)
   * [bare-async](#bare-async)
-* [`polendina-node`: the minimal Node.js test runner](#polendina-node-the-minimal-nodejs-test-runner)
+* [TypeScript support (and other Webpack extensions)](#typescript-support-and-other-webpack-extensions)
+* [polendina-node: the minimal Node.js test runner](#polendina-node-the-minimal-nodejs-test-runner)
 * [Minimising Puppeteer's size](#minimising-puppeteers-size)
-  * [Global and `npx`](#global-and-npx)
+  * [Global and npx](#global-and-npx)
 * [License and Copyright](#license-and-copyright)
 
 ## What and why?
@@ -158,6 +159,34 @@ module.exports.testFail = async () => {
   })
 }
 ```
+
+## TypeScript support (and other Webpack extensions)
+
+Among other things, the `--webpack-config` option can be used to enable TypeScript support by mixing in the [ts-loader](https://ghub.io/ts-loader) package:
+
+**webpack.config.ts.js**
+
+```js
+module.exports = {
+    module: {
+        rules: [
+            {
+                test: /\.tsx?$/,
+                use: 'ts-loader',
+                exclude: /node_modules/
+            }
+        ]
+    }
+    resolve: {
+        extensions: ['.tsx', '.ts', '.js']
+    }
+}
+```
+
+```sh
+$ polendina --cleanup test/*.spec.ts --webpack-config webpack.config.ts.js
+```
+
 
 ## `polendina-node`: the minimal Node.js test runner
 
