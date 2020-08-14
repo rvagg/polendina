@@ -6,7 +6,7 @@
   "dependencies": {
     "ansi-colors": "^4.1.1",
     "glob": "^7.1.6",
-    "puppeteer": "^2.0.0",
+    "puppeteer": "^5.2.1",
     "raw-loader": "^4.0.0",
     "rimraf": "^3.0.0",
     "st": "^2.0.0",
