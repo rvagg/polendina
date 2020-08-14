@@ -89,7 +89,12 @@ class Polendina {
   }
 
   _executeMode (mode) {
-    const mount = st({ path: this.outputDir, index: 'index.html', url: '/' })
+    const mount = st({
+      path: this.outputDir,
+      index: 'index.html',
+      url: '/',
+      cache: false
+    })
     return new Promise((resolve, reject) => {
       const server = http.createServer((req, res) => {
         mount(req, res, () => {
