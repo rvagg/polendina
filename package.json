@@ -8,6 +8,7 @@
     "glob": "^7.1.6",
     "puppeteer": "^5.2.1",
     "raw-loader": "^4.0.0",
+    "readable-stream": "^2.3.7",
     "rimraf": "^3.0.0",
     "st": "^2.0.0",
     "strip-ansi": "^6.0.0",
@@ -19,15 +20,10 @@
     "polendina": "./polendina-cli.js",
     "polendina-node": "./polendina-node-cli.js"
   },
-  "devDependencies": {
-    "mocha": "^7.0.0",
-    "standard": "^14.3.1",
-    "tape": "^4.12.1"
-  },
   "scripts": {
-    "lint": "standard",
+    "lint": "npx standard",
     "test:install": "for f in $(cd test/fixtures/; ls); do (cd test/fixtures/$f && grep devDependencies package.json > /dev/null && npm i --no-audit --no-fund --no-package-lock) || true; done",
-    "test:run": "mocha test/test-*.js",
+    "test:run": "npx mocha test/test-*.js",
     "test": "npm run lint && npm run test:install && npm run test:run"
   },
   "repository": {

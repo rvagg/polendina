@@ -13,15 +13,15 @@ describe('basic tape', function () {
 TAP version 13
 # test suite 1
 # test case 1
-ok 1 should be equal
+ok 1 should be strictly equal
 # test case 2
 ok 2 all good
 # test suite 2 - worker
 # is WORKER
-ok 3 should be equal
+ok 3 should be strictly equal
 # test suite 3
 # test case 1
-ok 4 should be equal
+ok 4 should be strictly equal
 # test case 2
 ok 5 all good
 
@@ -80,7 +80,7 @@ describe('failing tape', function () {
 TAP version 13
 # test suite 1 - worker
 # is WORKER
-ok 1 should be equal
+ok 1 should be strictly equal
 # test suite 2 - failure
 # test case 1
 not ok 2 bork
