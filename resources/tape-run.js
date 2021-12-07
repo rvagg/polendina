@@ -1,16 +1,16 @@
 // in-browser setup and runner for Tape, at end of bundle
 
-const tape = require('tape')
-const { registry, setup, executionQueue } = require('./common-run')
+import tape from 'tape'
+import { registry, setup, executionQueue } from './common-run.js'
+import { Transform } from 'stream'
 
 function runTape () {
-  const { Transform } = require('stream')
   let failures = 0
 
   const stream = new Transform({
     transform (chunk, encoding, callback) {
       executionQueue(() => {
-        global.polendinaWrite(chunk.toString())
+        globalThis.polendinaWrite(chunk.toString())
           .catch(callback)
           .then(callback)
       })
@@ -18,7 +18,7 @@ function runTape () {
 
     flush (callback) {
       executionQueue(() => {
-        global.polendinaEnd(failures)
+        globalThis.polendinaEnd(failures)
           .catch(callback)
           .then(callback)
       })

@@ -1,4 +1,4 @@
-class BareRunner {
+export class BareRunner {
   constructor (log, tests) {
     this.log = log
     this.tests = tests
@@ -36,13 +36,17 @@ class BareRunner {
 
   async runBareAsync () {
     return this.runBare(async (mod) => {
-      const exp = mod.load()
+      const exp = await mod.load()
       if (typeof exp === 'function') {
         return this.execBare(mod.name, exp)
       }
+      const expn = Object.keys(exp)
+      if (expn.length === 1 && expn[0] === 'default' && typeof exp.default === 'function') {
+        return this.execBare(mod.name, exp.default)
+      }
       await this.log.info(`  ${mod.name}`)
       let found = false
-      for (const name in exp) {
+      for (const name of expn) {
         const fn = exp[name]
         if (typeof fn === 'function') {
           found = true
@@ -55,5 +59,3 @@ class BareRunner {
     })
   }
 }
-
-module.exports = BareRunner

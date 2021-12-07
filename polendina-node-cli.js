@@ -1,12 +1,16 @@
 #!/usr/bin/env node
 
+import process from 'process'
+import path from 'path'
+import glob from 'glob'
+import stripAnsi from 'strip-ansi'
+import yargs from 'yargs'
+import { hideBin } from 'yargs/helpers'
+import { BareRunner } from './resources/bare.js'
+
 const start = Date.now()
-const glob = require('glob')
-const path = require('path')
-const stripAnsi = require('strip-ansi')
 const tty = process.stdout.isTTY && process.stderr.isTTY
-const BareRunner = require('./resources/bare')
-const argv = require('yargs')
+const argv = yargs(hideBin(process.argv))
   .command('bare-sync <test files..>', 'Run synchronous tests using a plain require(file)')
   .command('bare-async <test files..>', 'Run tests by executing exported functions from files as async')
   .demandCommand()
@@ -42,7 +46,7 @@ async function run () {
   const tests = testFiles.map((f) => {
     return {
       name: path.relative(process.cwd(), f),
-      load: () => require(path.resolve(process.cwd(), f))
+      load: () => import(new URL(`file://${path.resolve(process.cwd(), f)}`))
     }
   })
   const log = {

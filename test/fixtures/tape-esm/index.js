@@ -1,0 +1,1 @@
+export default 'polendina test'

@@ -1,12 +1,13 @@
 #!/usr/bin/env node
 
+import path from 'path'
+import yargs from 'yargs'
+import { hideBin } from 'yargs/helpers'
+import { log } from './lib/log.js'
+import { Polendina } from './polendina.js'
+
 const start = Date.now()
-
-const path = require('path')
-const { log } = require('./lib/log')
-const Polendina = require('./polendina')
-
-const argv = require('yargs')
+const argv = yargs(hideBin(process.argv))
   .usage('$0 testfile.js [testfile2.js [tests/**/test*.js ...] ]')
   .option('runner', {
     alias: 'r',

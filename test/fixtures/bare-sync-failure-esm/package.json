@@ -1,19 +1,19 @@
 {
-  "name": "fixture-mocha",
+  "name": "fixture-bare-sync-failure",
   "version": "1.0.0",
-  "description": "test-fixture",
+  "description": "test fixture",
   "main": "index.js",
+  "type": "module",
   "scripts": {
-    "test": "mocha test-*.js"
+    "test": "node test-1.js && node test-2.js"
   },
   "author": "Rod <rod@vagg.org> (http://r.va.gg/)",
-  "license": "Apache-2.0",
   "repository": {
     "type": "git",
     "url": "https://github.com/rvagg/polendina.git"
   },
+  "license": "Apache-2.0",
   "devDependencies": {
-    "chai": "^4.3.4",
-    "mocha": "^9.1.3"
+    "chai": "^4.3.4"
   }
 }
