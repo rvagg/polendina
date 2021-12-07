@@ -1,0 +1,154 @@
+version: 2
+updates:
+  - package-ecosystem: 'github-actions'
+    directory: '/'
+    schedule:
+      interval: 'daily'
+    commit-message:
+      prefix: 'chore'
+      include: 'scope'
+
+  - package-ecosystem: 'npm'
+    directory: '/'
+    schedule:
+      interval: 'daily'
+    commit-message:
+      prefix: 'chore'
+      include: 'scope'
+
+  - package-ecosystem: 'npm'
+    directory: '/test/fixtures/bare-async'
+    schedule:
+      interval: 'daily'
+    commit-message:
+      prefix: 'chore'
+      include: 'scope'
+
+  - package-ecosystem: 'npm'
+    directory: '/test/fixtures/bare-async-esm'
+    schedule:
+      interval: 'daily'
+    commit-message:
+      prefix: 'chore'
+      include: 'scope'
+
+  - package-ecosystem: 'npm'
+    directory: '/test/fixtures/bare-async-failure'
+    schedule:
+      interval: 'daily'
+    commit-message:
+      prefix: 'chore'
+      include: 'scope'
+
+  - package-ecosystem: 'npm'
+    directory: '/test/fixtures/bare-async-failure-esm'
+    schedule:
+      interval: 'daily'
+    commit-message:
+      prefix: 'chore'
+      include: 'scope'
+
+  - package-ecosystem: 'npm'
+    directory: '/test/fixtures/bare-sync'
+    schedule:
+      interval: 'daily'
+    commit-message:
+      prefix: 'chore'
+      include: 'scope'
+
+  - package-ecosystem: 'npm'
+    directory: '/test/fixtures/bare-sync-esm'
+    schedule:
+      interval: 'daily'
+    commit-message:
+      prefix: 'chore'
+      include: 'scope'
+
+  - package-ecosystem: 'npm'
+    directory: '/test/fixtures/bare-sync-failure'
+    schedule:
+      interval: 'daily'
+    commit-message:
+      prefix: 'chore'
+      include: 'scope'
+
+  - package-ecosystem: 'npm'
+    directory: '/test/fixtures/bare-sync-failure-esm'
+    schedule:
+      interval: 'daily'
+    commit-message:
+      prefix: 'chore'
+      include: 'scope'
+
+  - package-ecosystem: 'npm'
+    directory: '/test/fixtures/mocha'
+    schedule:
+      interval: 'daily'
+    commit-message:
+      prefix: 'chore'
+      include: 'scope'
+
+  - package-ecosystem: 'npm'
+    directory: '/test/fixtures/mocha-esm'
+    schedule:
+      interval: 'daily'
+    commit-message:
+      prefix: 'chore'
+      include: 'scope'
+
+  - package-ecosystem: 'npm'
+    directory: '/test/fixtures/mocha-failure'
+    schedule:
+      interval: 'daily'
+    commit-message:
+      prefix: 'chore'
+      include: 'scope'
+
+  - package-ecosystem: 'npm'
+    directory: '/test/fixtures/mocha-failure-esm'
+    schedule:
+      interval: 'daily'
+    commit-message:
+      prefix: 'chore'
+      include: 'scope'
+
+  - package-ecosystem: 'npm'
+    directory: '/test/fixtures/tape'
+    schedule:
+      interval: 'daily'
+    commit-message:
+      prefix: 'chore'
+      include: 'scope'
+
+  - package-ecosystem: 'npm'
+    directory: '/test/fixtures/tape-esm'
+    schedule:
+      interval: 'daily'
+    commit-message:
+      prefix: 'chore'
+      include: 'scope'
+
+  - package-ecosystem: 'npm'
+    directory: '/test/fixtures/tape-failure'
+    schedule:
+      interval: 'daily'
+    commit-message:
+      prefix: 'chore'
+      include: 'scope'
+
+  - package-ecosystem: 'npm'
+    directory: '/test/fixtures/tape-failure-esm'
+    schedule:
+      interval: 'daily'
+    commit-message:
+      prefix: 'chore'
+      include: 'scope'
+
+  - package-ecosystem: 'npm'
+    directory: '/test/fixtures/webpack-merge'
+    schedule:
+      interval: 'daily'
+    commit-message:
+      prefix: 'chore'
+      include: 'scope'
+
