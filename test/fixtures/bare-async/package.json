@@ -11,5 +11,8 @@
     "type": "git",
     "url": "https://github.com/rvagg/polendina.git"
   },
-  "license": "Apache-2.0"
+  "license": "Apache-2.0",
+  "devDependencies": {
+    "chai": "^4.3.4"
+  }
 }

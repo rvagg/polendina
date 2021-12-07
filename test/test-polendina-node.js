@@ -44,7 +44,7 @@ Took X seconds
     const { stdout, stderr, code } = await runCli('bare-sync', bareSyncFailureFixture)
     assert.strictEqual(code, 1, 'exited with non-zero exit code')
     assert.strictEqual(removeTiming(stdout), expected)
-    assert.ok(stderr.includes('AssertionError [ERR_ASSERTION]: \'nope\' != \'faily mcfailface\''), 'stderr contains expected output')
+    assert.ok(stderr.includes('AssertionError: faily mcfailface'), 'stderr contains expected output')
   })
 })
 
@@ -78,6 +78,6 @@ Took X seconds
     const { stdout, stderr, code } = await runCli('bare-async', bareAsyncFailureFixture)
     assert.strictEqual(code, 1, 'exited with non-zero exit code')
     assert.strictEqual(removeTiming(stdout), expected)
-    assert.ok(stderr.includes('AssertionError [ERR_ASSERTION]: \'nope\' != \'faily mcfailface\''), 'stderr contains expected output')
+    assert.ok(stderr.includes('AssertionError: faily mcfailface'), 'stderr contains expected output')
   })
 })

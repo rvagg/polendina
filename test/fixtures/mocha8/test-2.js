@@ -1,6 +1,6 @@
 /* globals describe it WorkerGlobalScope ServiceWorkerGlobalScope */
 
-const assert = require('assert')
+const { assert } = require('chai')
 
 describe('test suite 2 - worker', () => {
   if (typeof ServiceWorkerGlobalScope !== 'undefined' && global instanceof ServiceWorkerGlobalScope) {

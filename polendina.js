@@ -5,7 +5,7 @@ const http = require('http')
 const st = require('st')
 const rimraf = promisify(require('rimraf'))
 const webpack = promisify(require('webpack'))
-const merge = require('webpack-merge')
+const { merge } = require('webpack-merge')
 const puppeteer = require('./lib/puppeteer')
 
 class Polendina {
@@ -34,9 +34,25 @@ class Polendina {
   async build () {
     let webpackConfig = require('./lib/webpack.config')(process.env, this._options, this._runnerModule)
 
+    if (this._options.runner === 'tape') {
+      webpackConfig = merge(webpackConfig, {
+        resolve: {
+          fallback: {
+            stream: path.join(__dirname, 'node_modules', 'stream-browserify'),
+            path: path.join(__dirname, 'node_modules', 'path-browserify')
+          }
+        },
+        plugins: [
+          new webpack.ProvidePlugin({
+            process: 'process/browser'
+          })
+        ]
+      })
+    }
+
     if (this._options.webpackConfig) {
       const userConfig = require(path.join(process.cwd(), this._options.webpackConfig))
-      webpackConfig = merge.smart(webpackConfig, userConfig)
+      webpackConfig = merge(webpackConfig, userConfig)
     }
 
     await fs.mkdir(this.outputDir, { recursive: true })

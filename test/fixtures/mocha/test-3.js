@@ -1,7 +1,7 @@
 /* globals describe it */
 
 const fixture = require('./')
-const assert = require('assert')
+const { assert } = require('chai')
 
 describe('test suite 3', () => {
   it('test case 1', () => {

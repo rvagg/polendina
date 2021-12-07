@@ -1,6 +1,6 @@
 /* globals WorkerGlobalScope ServiceWorkerGlobalScope */
 
-const assert = require('assert')
+const { assert } = require('chai')
 
 module.exports = async function () {
   if (typeof ServiceWorkerGlobalScope !== 'undefined' && global instanceof ServiceWorkerGlobalScope) {

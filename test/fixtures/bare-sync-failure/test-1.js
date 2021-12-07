@@ -1,6 +1,6 @@
 /* globals WorkerGlobalScope ServiceWorkerGlobalScope */
 
-const assert = require('assert')
+const { assert } = require('chai')
 
 if (typeof ServiceWorkerGlobalScope !== 'undefined' && global instanceof ServiceWorkerGlobalScope) {
   console.log('testing is in serviceworker')

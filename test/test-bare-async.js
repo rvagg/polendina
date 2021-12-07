@@ -70,7 +70,7 @@ testing bare fixture
     ✔ test1
     ✘ test2
 `
-  const expectedStderr = 'AssertionError: \'nope\' undefined \'faily mcfailface\''
+  const expectedStderr = 'AssertionError: faily mcfailface'
 
   it('should fail in page', async () => {
     let { stdout, stderr, code } = await runCli(bareSyncFailureFixture, '--runner=bare-async')
