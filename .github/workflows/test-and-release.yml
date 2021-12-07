@@ -20,6 +20,7 @@ jobs:
           npm install --no-progress
       - name: Run tests
         run: |
+          npm config set script-shell bash
           npm test
   release:
     name: Release
