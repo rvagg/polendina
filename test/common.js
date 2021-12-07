@@ -1,13 +1,16 @@
-const path = require('path')
-const assert = require('assert')
-const { execFile } = require('child_process')
+import path from 'path'
+import assert from 'assert'
+import { execFile } from 'child_process'
+import { fileURLToPath } from 'url'
+
+const __dirname = fileURLToPath(path.dirname(import.meta.url))
 const cli = path.join(__dirname, '../polendina-cli.js')
 
-async function runCli (cwd, args) {
+export async function runCli (cwd, args) {
   return runCommand(`${cli} test*.js --cleanup ${args || ''}`, cwd)
 }
 
-async function runCommand (command, cwd) {
+export async function runCommand (command, cwd) {
   return new Promise((resolve, reject) => {
     const args = command.split(' ').filter(Boolean)
     execFile(process.execPath, args, { cwd }, (err, stdout, stderr) => {
@@ -23,6 +26,3 @@ async function runCommand (command, cwd) {
     })
   })
 }
-
-module.exports.runCli = runCli
-module.exports.runCommand = runCommand

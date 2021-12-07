@@ -1,8 +1,7 @@
 /* globals describe it WorkerGlobalScope ServiceWorkerGlobalScope */
+import { assert } from 'chai'
 
-const { assert } = require('chai')
-
-describe('test suite 2 - worker', () => {
+describe('test suite 1 - worker', () => {
   if (typeof ServiceWorkerGlobalScope !== 'undefined' && global instanceof ServiceWorkerGlobalScope) {
     it('is in serviceworker', () => {
       assert.strictEqual(typeof ServiceWorkerGlobalScope, 'function')
@@ -16,4 +15,10 @@ describe('test suite 2 - worker', () => {
       assert.strictEqual(typeof WorkerGlobalScope, 'undefined')
     })
   }
+})
+
+describe('test suite 2 - failing', () => {
+  it('should fail', () => {
+    throw new Error('failing test')
+  })
 })

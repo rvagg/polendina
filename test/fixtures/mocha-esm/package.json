@@ -1,8 +1,9 @@
 {
-  "name": "fixture-mocha8",
+  "name": "fixture-mocha",
   "version": "1.0.0",
   "description": "test-fixture",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "test": "mocha test-*.js"
   },
@@ -13,7 +14,7 @@
     "url": "https://github.com/rvagg/polendina.git"
   },
   "devDependencies": {
-    "mocha": "^8.0.0",
-    "chai": "^4.3.4"
+    "chai": "^4.3.4",
+    "mocha": "^9.1.3"
   }
 }

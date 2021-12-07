@@ -1,9 +1,9 @@
 /* globals describe it */
 
-const fixture = require('./')
-const { assert } = require('chai')
+import fixture from './index.js'
+import { assert } from 'chai'
 
-describe('test suite 1', () => {
+describe('test suite 3', () => {
   it('test case 1', () => {
     assert.strictEqual(fixture, 'polendina test')
   })

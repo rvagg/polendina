@@ -1,12 +1,11 @@
 // in-browser setup and runner for Mocha, at end of bundle
 
-const mochaExport = require('mocha/mocha.js')
-const { registry, executionQueue, log, setup } = require('./common-run')
+import mochaExport from 'mocha/mocha-es2018.js'
+import { registry, executionQueue, log, setup } from './common-run.js'
 
 function runMocha () {
   // mocha@8 exports what we want, mocha@7 sets a global
-  const mochaLocal = global.mocha ? global.mocha : mochaExport
-  global._mocha = mochaLocal
+  const mochaLocal = mochaExport
   mochaLocal.setup({ reporter: registry.argv.mochaReporter, ui: 'bdd' })
   // mocha@7 deprecated useColors()
   if (typeof mochaLocal.color === 'function') {
@@ -26,7 +25,7 @@ function runMocha () {
   mochaLocal
     .run((_errors) => { errors = _errors })
     .on('end', (...args) => {
-      executionQueue(() => global.polendinaEnd(errors))
+      executionQueue(() => globalThis.polendinaEnd(errors))
     })
 }
 

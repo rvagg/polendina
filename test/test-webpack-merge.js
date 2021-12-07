@@ -1,9 +1,11 @@
 /* globals describe it */
 
-const assert = require('assert')
-const path = require('path')
-const { runCli } = require('./common')
+import assert from 'assert'
+import path from 'path'
+import { fileURLToPath } from 'url'
+import { runCli } from './common.js'
 
+const __dirname = fileURLToPath(path.dirname(import.meta.url))
 const webpackMergeFixture = path.join(__dirname, 'fixtures/webpack-merge')
 
 describe('basic webpack-merge', function () {

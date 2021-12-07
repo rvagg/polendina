@@ -1,3 +1,6 @@
 // see wrap-loader.js
 
-module.exports.tests = []
+export const registry = {
+  argv: null,
+  tests: []
+}

@@ -1,14 +1,21 @@
-const { promisify } = require('util')
-const path = require('path')
-const fs = require('fs').promises
-const http = require('http')
-const st = require('st')
-const rimraf = promisify(require('rimraf'))
-const webpack = promisify(require('webpack'))
-const { merge } = require('webpack-merge')
-const puppeteer = require('./lib/puppeteer')
+import { promisify } from 'util'
+import path from 'path'
+import fs from 'fs'
+import http from 'http'
+import { fileURLToPath } from 'url'
+import st from 'st'
+import _rimraf from 'rimraf'
+import _webpack from 'webpack'
+import { merge } from 'webpack-merge'
+import { run as puppeteer } from './lib/puppeteer.js'
+import { webpackConfig } from './lib/webpack.config.js'
 
-class Polendina {
+const rimraf = promisify(_rimraf)
+const webpack = promisify(_webpack)
+
+const __dirname = fileURLToPath(path.dirname(import.meta.url))
+
+export class Polendina {
   constructor (options) {
     this._options = options
 
@@ -32,14 +39,15 @@ class Polendina {
   }
 
   async build () {
-    let webpackConfig = require('./lib/webpack.config')(process.env, this._options, this._runnerModule)
+    let config = webpackConfig(process.env, this._options, this._runnerModule)
 
     if (this._options.runner === 'tape') {
-      webpackConfig = merge(webpackConfig, {
+      config = merge(config, {
         resolve: {
           fallback: {
             stream: path.join(__dirname, 'node_modules', 'stream-browserify'),
-            path: path.join(__dirname, 'node_modules', 'path-browserify')
+            path: path.join(__dirname, 'node_modules', 'path-browserify'),
+            fs: false
           }
         },
         plugins: [
@@ -51,20 +59,20 @@ class Polendina {
     }
 
     if (this._options.webpackConfig) {
-      const userConfig = require(path.join(process.cwd(), this._options.webpackConfig))
-      webpackConfig = merge(webpackConfig, userConfig)
+      const userConfig = (await import(`file://${path.join(process.cwd(), this._options.webpackConfig)}`)).default
+      config = merge(config, userConfig)
     }
 
-    await fs.mkdir(this.outputDir, { recursive: true })
+    await fs.promises.mkdir(this.outputDir, { recursive: true })
     const copyFiles = ['index.html', 'test-registry.js', 'page-run.js', 'common-run.js', this._runnerModule]
     if (this._options.runner.startsWith('bare-')) {
       copyFiles.push('bare.js')
     }
     await Promise.all(copyFiles.map((file) => {
-      return fs.copyFile(path.join(__dirname, 'resources', file), path.join(this.outputDir, file))
+      return fs.promises.copyFile(path.join(__dirname, 'resources', file), path.join(this.outputDir, file))
     }))
 
-    const stats = await webpack(webpackConfig)
+    const stats = await webpack(config)
     const info = stats.toJson()
 
     if (stats.hasErrors()) {
@@ -81,8 +89,8 @@ class Polendina {
     this.bundleFile = info.assetsByChunkName.main[0]
 
     if (this._options.stats) {
-      this.statsFile = path.join(webpackConfig.output.path, 'webpack-stats.json')
-      await fs.writeFile(this.statsFile, JSON.stringify(info), 'utf8')
+      this.statsFile = path.join(config.output.path, 'webpack-stats.json')
+      await fs.promises.writeFile(this.statsFile, JSON.stringify(info), 'utf8')
     }
   }
 
@@ -135,5 +143,3 @@ class Polendina {
     })
   }
 }
-
-module.exports = Polendina

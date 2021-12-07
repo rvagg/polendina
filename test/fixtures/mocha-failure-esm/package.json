@@ -1,8 +1,9 @@
 {
-  "name": "fixture-mocha",
+  "name": "fixture-mocha-failure",
   "version": "1.0.0",
-  "description": "test-fixture",
+  "description": "test fixture",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "test": "mocha test-*.js"
   },
