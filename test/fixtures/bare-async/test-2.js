@@ -1,4 +1,4 @@
-const assert = require('assert')
+const { assert } = require('chai')
 const index = require('./')
 
 module.exports.test1 = async function () {

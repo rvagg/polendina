@@ -1,4 +1,4 @@
-const assert = require('assert')
+const { assert } = require('chai')
 const index = require('./')
 
 module.exports.test1 = async function () {
@@ -7,5 +7,5 @@ module.exports.test1 = async function () {
 }
 
 module.exports.test2 = async function () {
-  assert.fail('nope', 'faily mcfailface')
+  assert.fail('faily mcfailface')
 }

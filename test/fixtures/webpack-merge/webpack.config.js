@@ -1,5 +1,5 @@
+const webpack = require('webpack')
+
 module.exports = {
-  node: {
-    querystring: 'empty'
-  }
+  plugins: [new webpack.DefinePlugin({ WOOP: '"woop"' })]
 }
