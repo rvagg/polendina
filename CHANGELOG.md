@@ -1,3 +1,10 @@
+### [2.0.6](https://github.com/rvagg/polendina/compare/v2.0.5...v2.0.6) (2022-01-24)
+
+
+### Trivial Changes
+
+* **deps:** bump webpack from 5.66.0 to 5.67.0 ([#31](https://github.com/rvagg/polendina/issues/31)) ([e4b90f0](https://github.com/rvagg/polendina/commit/e4b90f059b1e35da553a343c9b1156330a653add))
+
 ### [2.0.5](https://github.com/rvagg/polendina/compare/v2.0.4...v2.0.5) (2022-01-18)
 
 
