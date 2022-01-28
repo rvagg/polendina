@@ -1,3 +1,13 @@
+### [2.0.8](https://github.com/rvagg/polendina/compare/v2.0.7...v2.0.8) (2022-01-28)
+
+
+### Trivial Changes
+
+* **deps-dev:** bump tape from 5.4.1 to 5.5.0 in /test/fixtures/tape ([b564b82](https://github.com/rvagg/polendina/commit/b564b82aee325d58184ab2a0941352c482208e10))
+* **deps-dev:** bump tape in /test/fixtures/tape-esm ([3f5db65](https://github.com/rvagg/polendina/commit/3f5db65286ca661cb0045f72752849c66fb04fb6))
+* **deps-dev:** bump tape in /test/fixtures/tape-failure ([a928b0a](https://github.com/rvagg/polendina/commit/a928b0a0a0e381c06f6a27976bd9213c5d5b23f9))
+* **deps-dev:** bump tape in /test/fixtures/tape-failure-esm ([4eba814](https://github.com/rvagg/polendina/commit/4eba81491603f947d778c22b48aa62b4a0585259))
+
 ### [2.0.7](https://github.com/rvagg/polendina/compare/v2.0.6...v2.0.7) (2022-01-25)
 
 
