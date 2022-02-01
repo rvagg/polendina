@@ -16,7 +16,7 @@
     "st": "^3.0.0",
     "stream-browserify": "^3.0.0",
     "strip-ansi": "^7.0.1",
-    "webpack": "~5.67.0",
+    "webpack": "~5.68.0",
     "webpack-merge": "~5.8.0",
     "yargs": "^17.3.0"
   },
