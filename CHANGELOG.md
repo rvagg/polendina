@@ -1,3 +1,10 @@
+### [2.0.10](https://github.com/rvagg/polendina/compare/v2.0.9...v2.0.10) (2022-02-09)
+
+
+### Trivial Changes
+
+* **deps:** bump puppeteer from 13.1.3 to 13.2.0 ([1583a26](https://github.com/rvagg/polendina/commit/1583a261f243b238a227afb4f7f5588e1760384c))
+
 ### [2.0.9](https://github.com/rvagg/polendina/compare/v2.0.8...v2.0.9) (2022-02-01)
 
 
