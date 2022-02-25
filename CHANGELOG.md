@@ -1,3 +1,11 @@
+### [2.0.13](https://github.com/rvagg/polendina/compare/v2.0.12...v2.0.13) (2022-02-25)
+
+
+### Trivial Changes
+
+* **deps:** bump puppeteer from 13.3.2 to 13.4.0 ([b786a7e](https://github.com/rvagg/polendina/commit/b786a7eb637b9046b54473135e2ccce53b7d6d9b))
+* **no-release:** bump actions/setup-node from 2.5.1 to 3.0.0 ([#45](https://github.com/rvagg/polendina/issues/45)) ([3f60aba](https://github.com/rvagg/polendina/commit/3f60aba983d7706aeff9fc955d161344ed9cb72f))
+
 ### [2.0.12](https://github.com/rvagg/polendina/compare/v2.0.11...v2.0.12) (2022-02-16)
 
 
