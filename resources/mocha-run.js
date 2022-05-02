@@ -1,6 +1,6 @@
 // in-browser setup and runner for Mocha, at end of bundle
 
-import mochaExport from 'mocha/mocha-es2018.js'
+import mochaExport from 'mocha/mocha.js'
 import { registry, executionQueue, log, setup } from './common-run.js'
 
 function runMocha () {
