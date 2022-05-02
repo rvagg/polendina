@@ -13,6 +13,6 @@
     "url": "https://github.com/rvagg/polendina.git"
   },
   "devDependencies": {
-    "tape": "~5.5.0"
+    "tape": "^5.5.3"
   }
 }
