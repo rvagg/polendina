@@ -1,3 +1,23 @@
+## [3.0.0](https://github.com/rvagg/polendina/compare/v2.0.15...v3.0.0) (2022-05-02)
+
+
+### ⚠ BREAKING CHANGES
+
+* update deps (incl mocha@10) & silence mocha warning
+
+### Bug Fixes
+
+* update deps (incl mocha@10) & silence mocha warning ([c631362](https://github.com/rvagg/polendina/commit/c63136264d1663641c0ff5e92d003361a312ce7a))
+
+
+### Trivial Changes
+
+* **deps:** bump glob from 7.2.0 to 8.0.1 ([3e96580](https://github.com/rvagg/polendina/commit/3e96580427e685f3dece4226df42eae9670d1515))
+* **deps:** bump puppeteer from 13.5.2 to 13.7.0 ([5489ebb](https://github.com/rvagg/polendina/commit/5489ebb84d7b30e28783d61011c57e46a9681402))
+* **deps:** bump webpack from 5.70.0 to 5.72.0 ([ff7f9dd](https://github.com/rvagg/polendina/commit/ff7f9ddaa661683121ab6b4178a9a9678b854be6))
+* **no-release:** bump actions/setup-node from 3.0.0 to 3.1.0 ([#50](https://github.com/rvagg/polendina/issues/50)) ([b59e0c1](https://github.com/rvagg/polendina/commit/b59e0c19fc72c45bbddadf560ba8cc78b71ce856))
+* **no-release:** bump actions/setup-node from 3.1.0 to 3.1.1 ([#52](https://github.com/rvagg/polendina/issues/52)) ([0dd2cea](https://github.com/rvagg/polendina/commit/0dd2cea8a9ff43926db45db1b02c356e3eb56926))
+
 ### [2.0.15](https://github.com/rvagg/polendina/compare/v2.0.14...v2.0.15) (2022-03-08)
 
 
