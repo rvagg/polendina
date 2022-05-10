@@ -1,3 +1,10 @@
+## [3.1.0](https://github.com/rvagg/polendina/compare/v3.0.0...v3.1.0) (2022-05-10)
+
+
+### Features
+
+* bump puppeteer from 13.7.0 to 14.0.0 ([#57](https://github.com/rvagg/polendina/issues/57)) ([8ab4886](https://github.com/rvagg/polendina/commit/8ab48869f24984025aa3d38e90502c02729a1008))
+
 ## [3.0.0](https://github.com/rvagg/polendina/compare/v2.0.15...v3.0.0) (2022-05-02)
 
 
