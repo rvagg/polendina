@@ -6,7 +6,7 @@
   "type": "module",
   "dependencies": {
     "ansi-colors": "^4.1.1",
-    "glob": "^8.0.1",
+    "glob": "^9.1.2",
     "path-browserify": "^1.0.1",
     "process": "^0.11.10",
     "puppeteer": "^14.0.0",
