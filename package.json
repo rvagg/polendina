@@ -12,7 +12,7 @@
     "puppeteer": "^14.0.0",
     "raw-loader": "^4.0.2",
     "readable-stream": "^3.6.0",
-    "rimraf": "^3.0.2",
+    "rimraf": "^4.3.1",
     "st": "^3.0.0",
     "stream-browserify": "^3.0.0",
     "strip-ansi": "^7.0.1",
