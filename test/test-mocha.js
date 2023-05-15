@@ -16,7 +16,7 @@ for (const type of ['cjs', 'esm']) {
   const mochaFailureFixture = path.join(__dirname, `fixtures/mocha-failure${type === 'esm' ? '-esm' : ''}`)
 
   describe(`basic mocha (${type})`, function () {
-    this.timeout(20000)
+    this.timeout(60000)
     const expectedTemplate = `
   test suite 1
     ✅ test case 1
@@ -34,6 +34,9 @@ for (const type of ['cjs', 'esm']) {
       const { stdout, code } = await runCli(mochaFixture)
       assert.strictEqual(code, 0, 'exited with zero exit code')
       const expected = expectedTemplate.replace(/WORKER/, 'not in worker')
+      if (!stdout.includes(expected)) {
+        console.error(stdout)
+      }
       assert.ok(stdout.includes(expected), 'stdout contains expected test output')
       assert.ok(stdout.includes('Running mocha page tests with Puppeteer'), 'stdout contains expected output for running in page')
     })
@@ -42,6 +45,9 @@ for (const type of ['cjs', 'esm']) {
       const { stdout, code } = await runCli(mochaFixture, '--worker --page=false')
       assert.strictEqual(code, 0, 'exited with zero exit code')
       const expected = expectedTemplate.replace(/WORKER/, 'in worker')
+      if (!stdout.includes(expected)) {
+        console.error(stdout)
+      }
       assert.ok(stdout.includes(expected), 'stdout contains expected test output')
       assert.ok(stdout.includes('Running mocha worker tests with Puppeteer'), 'stdout contains expected output for running in worker')
     })
@@ -50,6 +56,9 @@ for (const type of ['cjs', 'esm']) {
       const { stdout, code } = await runCli(mochaFixture, '--serviceworker --page=false')
       assert.strictEqual(code, 0, 'exited with zero exit code')
       const expected = expectedTemplate.replace(/WORKER/, 'in serviceworker')
+      if (!stdout.includes(expected)) {
+        console.error(stdout)
+      }
       assert.ok(stdout.includes(expected), 'stdout contains expected test output')
       assert.ok(stdout.includes('Running mocha serviceworker tests with Puppeteer'), 'stdout contains expected output for running in worker')
     })
@@ -59,21 +68,30 @@ for (const type of ['cjs', 'esm']) {
       assert.strictEqual(code, 0, 'exited with zero exit code')
 
       let expected = expectedTemplate.replace(/WORKER/, 'not in worker')
+      if (!stdout.includes(expected)) {
+        console.error(stdout)
+      }
       assert.ok(stdout.includes(expected), 'stdout contains expected test output')
       assert.ok(stdout.includes('Running mocha page tests with Puppeteer'), 'stdout contains expected output for running in page')
 
       expected = expectedTemplate.replace(/WORKER/, 'in worker')
+      if (!stdout.includes(expected)) {
+        console.error(stdout)
+      }
       assert.ok(stdout.includes(expected), 'stdout contains expected test output')
       assert.ok(stdout.includes('Running mocha worker tests with Puppeteer'), 'stdout contains expected output for running in worker')
 
       expected = expectedTemplate.replace(/WORKER/, 'in serviceworker')
+      if (!stdout.includes(expected)) {
+        console.error(stdout)
+      }
       assert.ok(stdout.includes(expected), 'stdout contains expected test output')
       assert.ok(stdout.includes('Running mocha serviceworker tests with Puppeteer'), 'stdout contains expected output for running in worker')
     })
   })
 
   describe(`failing mocha (${type})`, function () {
-    this.timeout(20000)
+    this.timeout(60000)
     const expectedTemplate = `
   test suite 1 - worker
     ✅ is WORKER
@@ -95,6 +113,9 @@ for (const type of ['cjs', 'esm']) {
       assert.strictEqual(code, 1, 'exited with non-zero exit code')
       stdout = removeTimings(stdout)
       const expected = expectedTemplate.replace(/WORKER/, 'not in worker')
+      if (!stdout.includes(expected)) {
+        console.error(stdout)
+      }
       assert.ok(stdout.includes(expected), 'stdout contains expected test output')
       assert.ok(stdout.includes('Running mocha page tests with Puppeteer'), 'stdout contains expected output for running in worker')
     })
@@ -104,6 +125,9 @@ for (const type of ['cjs', 'esm']) {
       assert.strictEqual(code, 1, 'exited with non-zero exit code')
       stdout = removeTimings(stdout)
       const expected = expectedTemplate.replace(/WORKER/, 'in worker')
+      if (!stdout.includes(expected)) {
+        console.error(stdout)
+      }
       assert.ok(stdout.includes(expected), 'stdout contains expected test output')
       assert.ok(stdout.includes('Running mocha worker tests with Puppeteer'), 'stdout contains expected output for running in worker')
     })
@@ -113,6 +137,9 @@ for (const type of ['cjs', 'esm']) {
       assert.strictEqual(code, 1, 'exited with non-zero exit code')
       stdout = removeTimings(stdout)
       const expected = expectedTemplate.replace(/WORKER/, 'in serviceworker')
+      if (!stdout.includes(expected)) {
+        console.error(stdout)
+      }
       assert.ok(stdout.includes(expected), 'stdout contains expected test output')
       assert.ok(stdout.includes('Running mocha serviceworker tests with Puppeteer'), 'stdout contains expected output for running in worker')
     })

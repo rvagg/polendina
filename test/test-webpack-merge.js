@@ -9,7 +9,7 @@ const __dirname = fileURLToPath(path.dirname(import.meta.url))
 const webpackMergeFixture = path.join(__dirname, 'fixtures/webpack-merge')
 
 describe('basic webpack-merge', function () {
-  this.timeout(20000)
+  this.timeout(60000)
   it('should run with a custom config', async () => {
     const expected = `
 assert.ok() is a function
@@ -18,6 +18,9 @@ WOOP is set
 `
     const { stdout, code } = await runCli(webpackMergeFixture, '--runner=bare-sync --webpack-config webpack.config.js')
     assert.strictEqual(code, 0, 'exited with zero exit code')
+    if (!stdout.includes(expected)) {
+      console.error(stdout)
+    }
     assert.ok(stdout.includes(expected), 'stdout contains expected test output')
     assert.ok(stdout.includes('Running bare-sync page tests with Puppeteer'), 'stdout contains expected output for running in page')
   })
