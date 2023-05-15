@@ -4,13 +4,12 @@ import fs from 'fs'
 import http from 'http'
 import { fileURLToPath } from 'url'
 import st from 'st'
-import _rimraf from 'rimraf'
+import { rimraf } from 'rimraf'
 import _webpack from 'webpack'
 import { merge } from 'webpack-merge'
 import { run as puppeteer } from './lib/puppeteer.js'
 import { webpackConfig } from './lib/webpack.config.js'
 
-const rimraf = promisify(_rimraf)
 const webpack = promisify(_webpack)
 
 const __dirname = fileURLToPath(path.dirname(import.meta.url))
