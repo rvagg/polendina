@@ -1,3 +1,31 @@
+## [3.2.0](https://github.com/rvagg/polendina/compare/v3.1.0...v3.2.0) (2023-05-15)
+
+
+### Features
+
+* big 'ol dependency update & associated fixes ([7e7bfc1](https://github.com/rvagg/polendina/commit/7e7bfc148c97384cd7c5f05d4b1a2894d0eb90d1))
+
+
+### Bug Fixes
+
+* ./ for registry loading, even on windows ([70d4c1f](https://github.com/rvagg/polendina/commit/70d4c1ff50616ad79def41c0d3b55f2668716d80))
+* debug nonzero exit codes (windows, CI) ([362f6c5](https://github.com/rvagg/polendina/commit/362f6c55437dc11a164f821ef31f9f1fe130a10b))
+* defer final console.log() ([b524822](https://github.com/rvagg/polendina/commit/b524822ea77ce72236190a2bffa2cf147a8f7c97))
+* extend timeouts, add debugging (for CI) ([f71ad1a](https://github.com/rvagg/polendina/commit/f71ad1a0bb497898082a55823647061ab696e4ca))
+* remove extraneous 'console' event ([02b884a](https://github.com/rvagg/polendina/commit/02b884a7504079ee1b9f27643f53653bafa0f017))
+* sequence console.log() calls ([839fceb](https://github.com/rvagg/polendina/commit/839fceb045b60ef9b8e27e9a7b41ec26e37f898c))
+* update node versions in CI ([aa2f616](https://github.com/rvagg/polendina/commit/aa2f616a1e2e92589b05c618e873758ab0aa6d46))
+
+
+### Trivial Changes
+
+* **no-release:** bump actions/setup-node from 3.1.1 to 3.2.0 ([#58](https://github.com/rvagg/polendina/issues/58)) ([115db86](https://github.com/rvagg/polendina/commit/115db867ce096bae7dcb34c94eed86c94738409e))
+* **no-release:** bump actions/setup-node from 3.2.0 to 3.3.0 ([#59](https://github.com/rvagg/polendina/issues/59)) ([313dffd](https://github.com/rvagg/polendina/commit/313dffd40fb58a19bc528d4a31b937e34cab7a1f))
+* **no-release:** bump actions/setup-node from 3.3.0 to 3.4.0 ([#67](https://github.com/rvagg/polendina/issues/67)) ([6d1aa17](https://github.com/rvagg/polendina/commit/6d1aa176013ab76e9370df360a4a39ad87644bdd))
+* **no-release:** bump actions/setup-node from 3.4.0 to 3.4.1 ([#70](https://github.com/rvagg/polendina/issues/70)) ([9de3e55](https://github.com/rvagg/polendina/commit/9de3e554bbc2eab075cd8bf6a31e2ad1838f17ab))
+* **no-release:** bump actions/setup-node from 3.4.1 to 3.5.0 ([#85](https://github.com/rvagg/polendina/issues/85)) ([3bc465c](https://github.com/rvagg/polendina/commit/3bc465cc3c7853036020e70db170e4d76327d610))
+* **no-release:** bump actions/setup-node from 3.5.0 to 3.5.1 ([#88](https://github.com/rvagg/polendina/issues/88)) ([113e5e4](https://github.com/rvagg/polendina/commit/113e5e4bf3cab293084f6ef6c3d2206b164da7cf))
+
 ## [3.1.0](https://github.com/rvagg/polendina/compare/v3.0.0...v3.1.0) (2022-05-10)
 
 
