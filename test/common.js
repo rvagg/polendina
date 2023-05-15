@@ -22,7 +22,8 @@ export async function runCommand (command, cwd) {
           return reject(e)
         }
       }
-      resolve({ stdout: stdout.toString(), stderr: stderr.toString(), code })
+      const out = { stdout: stdout.toString(), stderr: stderr.toString(), code }
+      resolve(out)
     })
   })
 }

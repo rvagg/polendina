@@ -2,7 +2,7 @@
 
 import process from 'process'
 import path from 'path'
-import glob from 'glob'
+import { glob } from 'glob'
 import stripAnsi from 'strip-ansi'
 import yargs from 'yargs'
 import { hideBin } from 'yargs/helpers'
@@ -35,7 +35,7 @@ function cleanLog (to) {
 async function run () {
   const mode = argv._[0]
   const testFiles = argv.testfiles.reduce((p, c) => {
-    return p.concat(glob.sync(c, { absolute: true }))
+    return p.concat(glob.sync(c, { absolute: true }).sort())
   }, [])
 
   // our globs may be fruitless
@@ -76,5 +76,5 @@ run()
 
     console.log(`Took ${time} second${time === 1 ? '' : 's'}`)
 
-    process.exit(errors)
+    process.exit(errors ? 1 : 0)
   })
