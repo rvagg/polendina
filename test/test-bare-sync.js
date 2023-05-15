@@ -21,7 +21,10 @@ testing bare fixture
 `
 
     it('should run in page', async () => {
-      const { stdout, code } = await runCli(bareSyncFixture, '--runner=bare-sync')
+      const { stdout, stderr, code } = await runCli(bareSyncFixture, '--runner=bare-sync')
+      if (code !== 0) {
+        console.error(stderr)
+      }
       assert.strictEqual(code, 0, 'exited with zero exit code')
       const expected = expectedTemplate.replace(/WORKER/, 'not in worker')
       if (!stdout.includes(expected)) {
@@ -32,7 +35,10 @@ testing bare fixture
     })
 
     it('should run in worker', async () => {
-      const { stdout, code } = await runCli(bareSyncFixture, '--runner=bare-sync --worker --page=false')
+      const { stdout, stderr, code } = await runCli(bareSyncFixture, '--runner=bare-sync --worker --page=false')
+      if (code !== 0) {
+        console.error(stderr)
+      }
       assert.strictEqual(code, 0, 'exited with zero exit code')
       const expected = expectedTemplate.replace(/WORKER/, 'in worker')
       if (!stdout.includes(expected)) {
@@ -43,7 +49,10 @@ testing bare fixture
     })
 
     it('should run in serviceworker', async () => {
-      const { stdout, code } = await runCli(bareSyncFixture, '--runner=bare-sync --serviceworker --page=false')
+      const { stdout, stderr, code } = await runCli(bareSyncFixture, '--runner=bare-sync --serviceworker --page=false')
+      if (code !== 0) {
+        console.error(stderr)
+      }
       assert.strictEqual(code, 0, 'exited with zero exit code')
       const expected = expectedTemplate.replace(/WORKER/, 'in serviceworker')
       if (!stdout.includes(expected)) {
@@ -54,7 +63,10 @@ testing bare fixture
     })
 
     it('should run in page, worker and serviceworker', async () => {
-      const { stdout, code } = await runCli(bareSyncFixture, '--runner=bare-sync --worker --serviceworker')
+      const { stdout, stderr, code } = await runCli(bareSyncFixture, '--runner=bare-sync --worker --serviceworker')
+      if (code !== 0) {
+        console.error(stderr)
+      }
       assert.strictEqual(code, 0, 'exited with zero exit code')
 
       let expected = expectedTemplate.replace(/WORKER/, 'not in worker')

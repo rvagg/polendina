@@ -16,7 +16,10 @@ assert.ok() is a function
 WOOP is set
   ✔ test.js
 `
-    const { stdout, code } = await runCli(webpackMergeFixture, '--runner=bare-sync --webpack-config webpack.config.js')
+    const { stdout, stderr, code } = await runCli(webpackMergeFixture, '--runner=bare-sync --webpack-config webpack.config.js')
+    if (code !== 0) {
+      console.error(stderr)
+    }
     assert.strictEqual(code, 0, 'exited with zero exit code')
     if (!stdout.includes(expected)) {
       console.error(stdout)
