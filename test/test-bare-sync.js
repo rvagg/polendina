@@ -147,6 +147,9 @@ testing bare fixture
       stdout = stdout.replace(/^ +at .*\n/gm, '') // stack traces
       const expected = expectedTemplate.replace(/WORKER/, 'not in worker')
       let found = stdout.indexOf(expected)
+      if (found === -1) {
+        console.error(stdout)
+      }
       assert.ok(found > -1, 'stdout contains expected test output')
       found = stdout.indexOf(expected, found + 1)
       assert.ok(found === -1, 'stdout doesn\'t contain second instance of expected test output')
