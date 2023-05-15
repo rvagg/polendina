@@ -13,6 +13,7 @@ const inWorker = !inPage && !inServiceWorker &&
   typeof WorkerGlobalScope !== 'undefined' &&
   globalThis instanceof WorkerGlobalScope
 let _executionQueue = Promise.resolve()
+let logSeq = 0
 
 export { registry }
 export function executionQueue (fn) {
@@ -22,17 +23,17 @@ export function executionQueue (fn) {
 
 export const log = {
   info: (...args) => {
-    executionQueue(() => globalThis.polendinaLog(['info'].concat(args)))
+    executionQueue(() => globalThis.polendinaLog(['info', logSeq++].concat(args)))
     return executionQueue
   },
   // TODO
   warn: (...args) => {
-    executionQueue(() => globalThis.polendinaLog(['warn'].concat(args)))
+    executionQueue(() => globalThis.polendinaLog(['warn', logSeq++].concat(args)))
     return executionQueue
   },
   // TODO
   error: (...args) => {
-    executionQueue(() => globalThis.polendinaLog(['error'].concat(args)))
+    executionQueue(() => globalThis.polendinaLog(['error', logSeq++].concat(args)))
     return executionQueue
   }
 }
