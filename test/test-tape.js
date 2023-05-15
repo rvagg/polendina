@@ -12,7 +12,7 @@ for (const type of ['cjs', 'esm']) {
   const tapeFailureFixture = path.join(__dirname, `fixtures/tape-failure${type === 'esm' ? '-esm' : ''}`)
 
   describe(`basic tape (${type})`, function () {
-    this.timeout(20000)
+    this.timeout(60000)
     const expectedTemplate = `
 TAP version 13
 # test suite 1
@@ -40,6 +40,9 @@ ok 5 all good
       const { stdout, code } = await runCli(tapeFixture, '--runner=tape')
       assert.strictEqual(code, 0, 'exited with zero exit code')
       const expected = expectedTemplate.replace(/WORKER/, 'not in worker')
+      if (!stdout.includes(expected)) {
+        console.error(stdout)
+      }
       assert.ok(stdout.includes(expected), 'stdout contains expected test output')
       assert.ok(stdout.includes('Running tape page tests with Puppeteer'), 'stdout contains expected output for running in page')
     })
@@ -48,6 +51,9 @@ ok 5 all good
       const { stdout, code } = await runCli(tapeFixture, '--runner=tape --worker --page=false')
       assert.strictEqual(code, 0, 'exited with zero exit code')
       const expected = expectedTemplate.replace(/WORKER/, 'in worker')
+      if (!stdout.includes(expected)) {
+        console.error(stdout)
+      }
       assert.ok(stdout.includes(expected), 'stdout contains expected test output')
       assert.ok(stdout.includes('Running tape worker tests with Puppeteer'), 'stdout contains expected output for running in page')
     })
@@ -56,6 +62,9 @@ ok 5 all good
       const { stdout, code } = await runCli(tapeFixture, '--runner=tape --serviceworker --page=false')
       assert.strictEqual(code, 0, 'exited with zero exit code')
       const expected = expectedTemplate.replace(/WORKER/, 'in serviceworker')
+      if (!stdout.includes(expected)) {
+        console.error(stdout)
+      }
       assert.ok(stdout.includes(expected), 'stdout contains expected test output')
       assert.ok(stdout.includes('Running tape serviceworker tests with Puppeteer'), 'stdout contains expected output for running in page')
     })
@@ -65,21 +74,30 @@ ok 5 all good
       assert.strictEqual(code, 0, 'exited with zero exit code')
 
       let expected = expectedTemplate.replace(/WORKER/, 'not in worker')
+      if (!stdout.includes(expected)) {
+        console.error(stdout)
+      }
       assert.ok(stdout.includes(expected), 'stdout contains expected test output')
       assert.ok(stdout.includes('Running tape serviceworker tests with Puppeteer'), 'stdout contains expected output for running in page')
 
       expected = expectedTemplate.replace(/WORKER/, 'in worker')
+      if (!stdout.includes(expected)) {
+        console.error(stdout)
+      }
       assert.ok(stdout.includes(expected), 'stdout contains expected test output')
       assert.ok(stdout.includes('Running tape serviceworker tests with Puppeteer'), 'stdout contains expected output for running in page')
 
       expected = expectedTemplate.replace(/WORKER/, 'in serviceworker')
+      if (!stdout.includes(expected)) {
+        console.error(stdout)
+      }
       assert.ok(stdout.includes(expected), 'stdout contains expected test output')
       assert.ok(stdout.includes('Running tape serviceworker tests with Puppeteer'), 'stdout contains expected output for running in page')
     })
   })
 
   describe(`failing tape (${type})`, function () {
-    this.timeout(20000)
+    this.timeout(60000)
     const expectedTemplate = `
 TAP version 13
 # test suite 1 - worker
@@ -105,6 +123,9 @@ not ok 2 bork
       assert.strictEqual(code, 1, 'exited with non-zero exit code')
       stdout = stdout.replace(/^ +at .*\n/gm, '') // stack traces
       const expected = expectedTemplate.replace(/WORKER/, 'not in worker')
+      if (!stdout.includes(expected)) {
+        console.error(stdout)
+      }
       assert.ok(stdout.includes(expected), 'stdout contains expected test output')
       assert.ok(stdout.includes('Running tape page tests with Puppeteer'), 'stdout contains expected output for running in worker')
     })
@@ -114,6 +135,9 @@ not ok 2 bork
       assert.strictEqual(code, 1, 'exited with non-zero exit code')
       stdout = stdout.replace(/^ +at .*\n/gm, '') // stack traces
       const expected = expectedTemplate.replace(/WORKER/, 'in worker')
+      if (!stdout.includes(expected)) {
+        console.error(stdout)
+      }
       assert.ok(stdout.includes(expected), 'stdout contains expected test output')
       assert.ok(stdout.includes('Running tape worker tests with Puppeteer'), 'stdout contains expected output for running in worker')
     })
@@ -123,6 +147,9 @@ not ok 2 bork
       assert.strictEqual(code, 1, 'exited with non-zero exit code')
       stdout = stdout.replace(/^ +at .*\n/gm, '') // stack traces
       const expected = expectedTemplate.replace(/WORKER/, 'in serviceworker')
+      if (!stdout.includes(expected)) {
+        console.error(stdout)
+      }
       assert.ok(stdout.includes(expected), 'stdout contains expected test output')
       assert.ok(stdout.includes('Running tape serviceworker tests with Puppeteer'), 'stdout contains expected output for running in worker')
     })

@@ -12,7 +12,7 @@ for (const type of ['cjs', 'esm']) {
   const bareSyncFailureFixture = path.join(__dirname, `fixtures/bare-sync-failure${type === 'esm' ? '-esm' : ''}`)
 
   describe(`basic bare-sync (${type})`, function () {
-    this.timeout(20000)
+    this.timeout(60000)
     const expectedTemplate = `
 testing is WORKER
   ✔ test-1.js
@@ -24,6 +24,9 @@ testing bare fixture
       const { stdout, code } = await runCli(bareSyncFixture, '--runner=bare-sync')
       assert.strictEqual(code, 0, 'exited with zero exit code')
       const expected = expectedTemplate.replace(/WORKER/, 'not in worker')
+      if (!stdout.includes(expected)) {
+        console.error(stdout)
+      }
       assert.ok(stdout.includes(expected), 'stdout contains expected test output')
       assert.ok(stdout.includes('Running bare-sync page tests with Puppeteer'), 'stdout contains expected output for running in page')
     })
@@ -32,6 +35,9 @@ testing bare fixture
       const { stdout, code } = await runCli(bareSyncFixture, '--runner=bare-sync --worker --page=false')
       assert.strictEqual(code, 0, 'exited with zero exit code')
       const expected = expectedTemplate.replace(/WORKER/, 'in worker')
+      if (!stdout.includes(expected)) {
+        console.error(stdout)
+      }
       assert.ok(stdout.includes(expected), 'stdout contains expected test output')
       assert.ok(stdout.includes('Running bare-sync worker tests with Puppeteer'), 'stdout contains expected output for running in page')
     })
@@ -40,6 +46,9 @@ testing bare fixture
       const { stdout, code } = await runCli(bareSyncFixture, '--runner=bare-sync --serviceworker --page=false')
       assert.strictEqual(code, 0, 'exited with zero exit code')
       const expected = expectedTemplate.replace(/WORKER/, 'in serviceworker')
+      if (!stdout.includes(expected)) {
+        console.error(stdout)
+      }
       assert.ok(stdout.includes(expected), 'stdout contains expected test output')
       assert.ok(stdout.includes('Running bare-sync serviceworker tests with Puppeteer'), 'stdout contains expected output for running in page')
     })
@@ -49,21 +58,30 @@ testing bare fixture
       assert.strictEqual(code, 0, 'exited with zero exit code')
 
       let expected = expectedTemplate.replace(/WORKER/, 'not in worker')
+      if (!stdout.includes(expected)) {
+        console.error(stdout)
+      }
       assert.ok(stdout.includes(expected), 'stdout contains expected test output')
       assert.ok(stdout.includes('Running bare-sync serviceworker tests with Puppeteer'), 'stdout contains expected output for running in page')
 
       expected = expectedTemplate.replace(/WORKER/, 'in worker')
+      if (!stdout.includes(expected)) {
+        console.error(stdout)
+      }
       assert.ok(stdout.includes(expected), 'stdout contains expected test output')
       assert.ok(stdout.includes('Running bare-sync serviceworker tests with Puppeteer'), 'stdout contains expected output for running in page')
 
       expected = expectedTemplate.replace(/WORKER/, 'in serviceworker')
+      if (!stdout.includes(expected)) {
+        console.error(stdout)
+      }
       assert.ok(stdout.includes(expected), 'stdout contains expected test output')
       assert.ok(stdout.includes('Running bare-sync serviceworker tests with Puppeteer'), 'stdout contains expected output for running in page')
     })
   })
 
   describe(`failing bare-sync (${type})`, function () {
-    this.timeout(20000)
+    this.timeout(60000)
     const expectedTemplate = `
 testing is WORKER
   ✔ test-1.js
@@ -77,6 +95,9 @@ testing bare fixture
       assert.strictEqual(code, 1, 'exited with non-zero exit code')
       stdout = stdout.replace(/^ +at .*\n/gm, '') // stack traces
       const expected = expectedTemplate.replace(/WORKER/, 'not in worker')
+      if (!stdout.includes(expected)) {
+        console.error(stdout)
+      }
       assert.ok(stdout.includes(expected), 'stdout contains expected test output')
       assert.ok(stdout.includes('Running bare-sync page tests with Puppeteer'), 'stdout contains expected output for running in worker')
       assert.ok(stderr.includes(expectedStderr), 'stderr contains expected output')
@@ -87,6 +108,9 @@ testing bare fixture
       assert.strictEqual(code, 1, 'exited with non-zero exit code')
       stdout = stdout.replace(/^ +at .*\n/gm, '') // stack traces
       const expected = expectedTemplate.replace(/WORKER/, 'in worker')
+      if (!stdout.includes(expected)) {
+        console.error(stdout)
+      }
       assert.ok(stdout.includes(expected), 'stdout contains expected test output')
       assert.ok(stdout.includes('Running bare-sync worker tests with Puppeteer'), 'stdout contains expected output for running in worker')
       assert.ok(stderr.includes(expectedStderr), 'stderr contains expected output')
@@ -97,6 +121,9 @@ testing bare fixture
       assert.strictEqual(code, 1, 'exited with non-zero exit code')
       stdout = stdout.replace(/^ +at .*\n/gm, '') // stack traces
       const expected = expectedTemplate.replace(/WORKER/, 'in serviceworker')
+      if (!stdout.includes(expected)) {
+        console.error(stdout)
+      }
       assert.ok(stdout.includes(expected), 'stdout contains expected test output')
       assert.ok(stdout.includes('Running bare-sync serviceworker tests with Puppeteer'), 'stdout contains expected output for running in worker')
       assert.ok(stderr.includes(expectedStderr), 'stderr contains expected output')

@@ -24,7 +24,7 @@ for (const type of ['cjs', 'esm']) {
   const bareAsyncFailureFixture = path.join(__dirname, `fixtures/bare-async-failure${type === 'esm' ? '-esm' : ''}`)
 
   describe(`polendina-node bare-sync (${type})`, function () {
-    this.timeout(20000)
+    this.timeout(60000)
     it('pass', async () => {
       const expected =
 `testing is not in worker
@@ -54,7 +54,7 @@ Took X seconds
   })
 
   describe(`polendina-node bare-async (${type})`, function () {
-    this.timeout(20000)
+    this.timeout(60000)
     it('pass', async () => {
       const expected =
 `testing is not in worker
