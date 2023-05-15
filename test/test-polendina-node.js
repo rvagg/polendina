@@ -33,7 +33,10 @@ testing bare fixture
   ✔ test-2.js
 Took X seconds
 `
-      const { stdout, code } = await runCli('bare-sync', bareSyncFixture)
+      const { stdout, stderr, code } = await runCli('bare-sync', bareSyncFixture)
+      if (code !== 0) {
+        console.error(stderr)
+      }
       assert.strictEqual(code, 0, 'exited with zero exit code')
       assert.strictEqual(removeTiming(stdout), expected)
     })
@@ -65,7 +68,10 @@ testing bare fixture
     ✔ test2
 Took X seconds
 `
-      const { stdout, code } = await runCli('bare-async', bareAsyncFixture)
+      const { stdout, stderr, code } = await runCli('bare-async', bareAsyncFixture)
+      if (code !== 0) {
+        console.error(stderr)
+      }
       assert.strictEqual(code, 0, 'exited with zero exit code')
       assert.strictEqual(removeTiming(stdout), expected)
     })
