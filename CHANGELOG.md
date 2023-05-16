@@ -1,3 +1,10 @@
+## [3.2.1](https://github.com/rvagg/polendina/compare/v3.2.0...v3.2.1) (2023-05-16)
+
+
+### Bug Fixes
+
+* properly handle subdirectories & relative directory tests ([4ea4a50](https://github.com/rvagg/polendina/commit/4ea4a5011385abdff614f2602e9be6be8cdd1d47))
+
 ## [3.2.0](https://github.com/rvagg/polendina/compare/v3.1.0...v3.2.0) (2023-05-15)
 
 
