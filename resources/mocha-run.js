@@ -3,7 +3,7 @@
 import mochaExport from 'mocha/mocha.js'
 import { registry, executionQueue, log, setup } from './common-run.js'
 
-function runMocha () {
+async function runMocha () {
   // mocha@8 exports what we want, mocha@7 sets a global
   const mochaLocal = mochaExport
   mochaLocal.setup({ reporter: registry.argv.mochaReporter, ui: 'bdd' })
@@ -18,7 +18,7 @@ function runMocha () {
   mochaLocal.constructor.reporters.Base.consoleLog = log.info
 
   for (const mod of registry.tests) {
-    mod.load()
+    await mod.load()
   }
 
   let errors = 0

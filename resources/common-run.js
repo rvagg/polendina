@@ -1,6 +1,6 @@
 /* globals WorkerGlobalScope ServiceWorkerGlobalScope clients */
 
-import { registry } from './test-registry.js'
+import { registry } from './test-registry.cjs'
 
 const inPage =
   typeof window !== 'undefined' &&

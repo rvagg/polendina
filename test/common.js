@@ -7,7 +7,7 @@ const __dirname = fileURLToPath(path.dirname(import.meta.url))
 const cli = path.join(__dirname, '../polendina-cli.js')
 
 export async function runCli (cwd, args) {
-  return runCommand(`${cli} test*.js --cleanup ${args || ''}`, cwd)
+  return runCommand(`${cli} test*.js test/test*.js --cleanup ${args || ''}`, cwd)
 }
 
 export async function runCommand (command, cwd) {
