@@ -20,6 +20,10 @@ testing is WORKER
 testing bare fixture
     ✔ test1
     ✔ test2
+  test/test-3.js
+testing bare fixture subdir
+    ✔ test1
+    ✔ test2
 `
 
     it('should run in page', async () => {

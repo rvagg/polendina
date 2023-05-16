@@ -18,6 +18,8 @@ testing is WORKER
   ✔ test-1.js
 testing bare fixture
   ✔ test-2.js
+testing bare fixture subdir
+  ✔ test/test-3.js
 `
 
     it('should run in page', async () => {

@@ -4,7 +4,7 @@ import tape from 'tape'
 import { registry, setup, executionQueue } from './common-run.js'
 import { Transform } from 'stream'
 
-function runTape () {
+async function runTape () {
   let failures = 0
 
   const stream = new Transform({
@@ -32,7 +32,7 @@ function runTape () {
   })
 
   for (const mod of registry.tests) {
-    mod.load()
+    await mod.load()
   }
 }
 
