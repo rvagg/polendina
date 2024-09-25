@@ -1,4 +1,3 @@
-
 import { assert } from 'chai'
 import index from '../index.js'
 
