@@ -1,3 +1,17 @@
+## [3.2.4](https://github.com/rvagg/polendina/compare/v3.2.3...v3.2.4) (2024-09-26)
+
+### Trivial Changes
+
+* **deps-dev:** bump chai from 4.5.0 to 5.1.1 in /test/fixtures/mocha ([ab2e24f](https://github.com/rvagg/polendina/commit/ab2e24fd27591fa820c12eb5c667904047afc023))
+* **deps-dev:** bump chai in /test/fixtures/bare-async-esm ([3cd6cda](https://github.com/rvagg/polendina/commit/3cd6cda77d356c18617c376c65737a025f790c7c))
+* **deps-dev:** bump chai in /test/fixtures/bare-async-failure-esm ([093dd73](https://github.com/rvagg/polendina/commit/093dd73580347d783fe55231b8ba77fa53afca95))
+* **deps-dev:** bump chai in /test/fixtures/bare-sync-esm ([7249d99](https://github.com/rvagg/polendina/commit/7249d995edf86cfc756cbca2e305cbf35c68f5af))
+* **deps-dev:** bump chai in /test/fixtures/bare-sync-failure-esm ([dfa8b32](https://github.com/rvagg/polendina/commit/dfa8b3253a5038f2ac9748b7b21db56380da7808))
+* **deps-dev:** bump chai in /test/fixtures/mocha-esm ([2f437a2](https://github.com/rvagg/polendina/commit/2f437a23b5249a75e68854a8e41b8c5039063827))
+* **deps-dev:** bump chai in /test/fixtures/mocha-failure ([a27175a](https://github.com/rvagg/polendina/commit/a27175ab02c7bee34dbb3be443accae34913818e))
+* **deps-dev:** bump chai in /test/fixtures/mocha-failure-esm ([24d22a7](https://github.com/rvagg/polendina/commit/24d22a71bb48875c279956b608fc49e9a3efe69e))
+* **deps-dev:** bump chai in /test/fixtures/webpack-merge ([850adbb](https://github.com/rvagg/polendina/commit/850adbbe29c6e668fb61c1ca30e4634b99a96a13))
+
 ## [3.2.3](https://github.com/rvagg/polendina/compare/v3.2.2...v3.2.3) (2024-09-26)
 
 ### Trivial Changes
