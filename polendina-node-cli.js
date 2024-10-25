@@ -46,7 +46,11 @@ async function run () {
   const tests = testFiles.map((f) => {
     return {
       name: path.relative(process.cwd(), f),
-      load: () => import(new URL(`file://${path.resolve(process.cwd(), f)}`))
+      load: async () => {
+        const mod = await import(new URL(`file://${path.resolve(process.cwd(), f)}`))
+        // Node.js 23 ESM CJS wrapper
+        return 'module.exports' in mod ? mod['module.exports'] : mod
+      }
     }
   })
   const log = {
