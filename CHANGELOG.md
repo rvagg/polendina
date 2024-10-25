@@ -1,3 +1,14 @@
+## [3.2.5](https://github.com/rvagg/polendina/compare/v3.2.4...v3.2.5) (2024-10-25)
+
+### Bug Fixes
+
+* adapt to Node.js 23 ESM CJS import wrapper ([85c1353](https://github.com/rvagg/polendina/commit/85c13537efa1316f7e77e269cf9a4e7664fa6e59))
+
+### Trivial Changes
+
+* **deps:** bump actions/setup-node from 4.0.4 to 4.1.0 ([f52212d](https://github.com/rvagg/polendina/commit/f52212d85c8e2a06a3ef596a7f0130a65fda76a2))
+* update deps ([cfd7be4](https://github.com/rvagg/polendina/commit/cfd7be4fff78503eccef4fc328cec14ecff68f0e))
+
 ## [3.2.4](https://github.com/rvagg/polendina/compare/v3.2.3...v3.2.4) (2024-09-26)
 
 ### Trivial Changes
