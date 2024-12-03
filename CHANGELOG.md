@@ -1,3 +1,12 @@
+## [3.2.6](https://github.com/rvagg/polendina/compare/v3.2.5...v3.2.6) (2024-12-03)
+
+### Trivial Changes
+
+* **deps-dev:** bump mocha in /test/fixtures/mocha ([2694528](https://github.com/rvagg/polendina/commit/2694528c0dd35224c6dfa9f608cd89285afc187e))
+* **deps-dev:** bump mocha in /test/fixtures/mocha-esm ([42d3c28](https://github.com/rvagg/polendina/commit/42d3c28e42513aa87204c1ecac9d960d54c275c6))
+* **deps-dev:** bump mocha in /test/fixtures/mocha-failure ([56aef00](https://github.com/rvagg/polendina/commit/56aef004cd68f3c5c80fd4ba8344ae04c6b99193))
+* **deps-dev:** bump mocha in /test/fixtures/mocha-failure-esm ([e685972](https://github.com/rvagg/polendina/commit/e685972590ad5bea7f7bc3b99fd63f4c5d81e7b3))
+
 ## [3.2.5](https://github.com/rvagg/polendina/compare/v3.2.4...v3.2.5) (2024-10-25)
 
 ### Bug Fixes
