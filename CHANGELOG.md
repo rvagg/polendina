@@ -1,3 +1,9 @@
+## [3.2.10](https://github.com/rvagg/polendina/compare/v3.2.9...v3.2.10) (2025-04-14)
+
+### Trivial Changes
+
+* **deps:** bump actions/setup-node from 4.3.0 to 4.4.0 ([12fcf24](https://github.com/rvagg/polendina/commit/12fcf242f503693a1c4737e6ced422723745d040))
+
 ## [3.2.9](https://github.com/rvagg/polendina/compare/v3.2.8...v3.2.9) (2025-03-17)
 
 ### Trivial Changes
