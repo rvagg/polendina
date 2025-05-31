@@ -1,3 +1,10 @@
+## [3.2.11](https://github.com/rvagg/polendina/compare/v3.2.10...v3.2.11) (2025-05-31)
+
+### Trivial Changes
+
+* **deps:** bump yargs from 17.7.2 to 18.0.0 ([720a32d](https://github.com/rvagg/polendina/commit/720a32d6870e1ec5f70e916846119313601e27e3))
+* update st to version that fixes deprecations ([c0c0636](https://github.com/rvagg/polendina/commit/c0c0636240cd93348f71ceed7f679a66aff592d3))
+
 ## [3.2.10](https://github.com/rvagg/polendina/compare/v3.2.9...v3.2.10) (2025-04-14)
 
 ### Trivial Changes
