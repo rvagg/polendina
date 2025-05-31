@@ -13,7 +13,7 @@
     "raw-loader": "^4.0.2",
     "readable-stream": "^4.5.2",
     "rimraf": "^6.0.1",
-    "st": "^3.0.1",
+    "st": "^3.0.2",
     "stream-browserify": "^3.0.0",
     "strip-ansi": "^7.1.0",
     "webpack": "^5.95.0",
