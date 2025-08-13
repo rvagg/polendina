@@ -1,3 +1,9 @@
+## [3.2.12](https://github.com/rvagg/polendina/compare/v3.2.11...v3.2.12) (2025-08-13)
+
+### Trivial Changes
+
+* **deps:** bump actions/checkout from 4 to 5 ([#154](https://github.com/rvagg/polendina/issues/154)) ([8fadb93](https://github.com/rvagg/polendina/commit/8fadb93f46610eb3bf317429a89c4b4acd073f32))
+
 ## [3.2.11](https://github.com/rvagg/polendina/compare/v3.2.10...v3.2.11) (2025-05-31)
 
 ### Trivial Changes
