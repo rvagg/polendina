@@ -1,6 +1,6 @@
 {
   "name": "polendina",
-  "version": "3.2.12",
+  "version": "3.2.13",
   "description": "Non-UI browser testing for JavaScript libraries from the command-line",
   "main": "polendina.js",
   "type": "module",
