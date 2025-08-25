@@ -14,7 +14,7 @@
     "url": "https://github.com/rvagg/polendina.git"
   },
   "devDependencies": {
-    "chai": "^5.1.1",
+    "chai": "^6.0.1",
     "mocha": "^11.0.1"
   }
 }
