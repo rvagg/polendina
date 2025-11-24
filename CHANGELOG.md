@@ -1,3 +1,9 @@
+## [3.2.16](https://github.com/rvagg/polendina/compare/v3.2.15...v3.2.16) (2025-11-24)
+
+### Trivial Changes
+
+* **deps:** bump glob from 11.1.0 to 13.0.0 ([#171](https://github.com/rvagg/polendina/issues/171)) ([ca356a5](https://github.com/rvagg/polendina/commit/ca356a52505e98d399e2faaa3f45c4e96971494f))
+
 ## [3.2.15](https://github.com/rvagg/polendina/compare/v3.2.14...v3.2.15) (2025-10-14)
 
 ### Trivial Changes
