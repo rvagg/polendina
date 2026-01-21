@@ -6,9 +6,9 @@
 >
 > Geppetto had a very bad temper. Woe to the one who called him Polendina! He became as wild as a beast and no one could soothe him.
 
-![CI](https://github.com/rvagg/polendina/workflows/CI/badge.svg?branch=master)
+[![CI](https://github.com/rvagg/polendina/actions/workflows/test-and-release.yml/badge.svg)](https://github.com/rvagg/polendina/actions/workflows/test-and-release.yml)
 
-[![NPM](https://nodei.co/npm/polendina.svg)](https://nodei.co/npm/polendina/)
+[![NPM](https://nodei.co/npm/polendina.svg?style=flat&data=n,v&color=blue)](https://nodei.co/npm/polendina/)
 
 * [What and why?](#what-and-why)
 * [Usage](#usage)
