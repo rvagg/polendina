@@ -1,3 +1,10 @@
+## [3.2.19](https://github.com/rvagg/polendina/compare/v3.2.18...v3.2.19) (2026-01-21)
+
+### Trivial Changes
+
+* **ci:** OIDC publishing ([#175](https://github.com/rvagg/polendina/issues/175)) ([6117276](https://github.com/rvagg/polendina/commit/611727608b2e5f29c17042392c56c7ea03f19c16))
+* **deps:** bump actions/setup-node from 6.1.0 to 6.2.0 ([#174](https://github.com/rvagg/polendina/issues/174)) ([d82dd3e](https://github.com/rvagg/polendina/commit/d82dd3e77a77254c71f6bb003a800c15cf53a140))
+
 ## [3.2.18](https://github.com/rvagg/polendina/compare/v3.2.17...v3.2.18) (2025-12-05)
 
 ### Trivial Changes
