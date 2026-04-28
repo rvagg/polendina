@@ -1,3 +1,9 @@
+## [3.2.21](https://github.com/rvagg/polendina/compare/v3.2.20...v3.2.21) (2026-04-28)
+
+### Trivial Changes
+
+* **deps:** bump actions/setup-node from 6.3.0 to 6.4.0 ([#177](https://github.com/rvagg/polendina/issues/177)) ([f14e76b](https://github.com/rvagg/polendina/commit/f14e76b306e33cc2a70804226df112aa5119b6a0))
+
 ## [3.2.20](https://github.com/rvagg/polendina/compare/v3.2.19...v3.2.20) (2026-03-06)
 
 ### Trivial Changes
