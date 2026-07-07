@@ -1,3 +1,5 @@
+## [3.2.24](https://github.com/rvagg/polendina/compare/v3.2.23...v3.2.24) (2026-07-07)
+
 ## [3.2.23](https://github.com/rvagg/polendina/compare/v3.2.22...v3.2.23) (2026-06-22)
 
 ### Trivial Changes
