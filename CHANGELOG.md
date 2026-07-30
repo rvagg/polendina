@@ -1,3 +1,13 @@
+## [3.2.26](https://github.com/rvagg/polendina/compare/v3.2.25...v3.2.26) (2026-07-30)
+
+### Bug Fixes
+
+* disable tsconfig resolution in webpack config ([5d3a776](https://github.com/rvagg/polendina/commit/5d3a776a158d9e10c5dccb013e02d395eb20fa8f))
+
+### Trivial Changes
+
+* downgrade broken changelog maker, backfill entries ([5df59bf](https://github.com/rvagg/polendina/commit/5df59bf002411249979529904a92c9f01821f3dd))
+
 ## [3.2.25](https://github.com/rvagg/polendina/compare/v3.2.24...v3.2.25) (2026-07-14)
 
 ### Trivial Changes
