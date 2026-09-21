@@ -1,11 +1,12 @@
 // in-browser setup and runner for Mocha, at end of bundle
 
-import mochaExport from 'mocha/mocha.js'
+// the browser bundle is UMD in mocha<=11 and an ES module in mocha>=12; both set
+// the instance on the global, so that's our lowest common denominator
+import 'mocha/mocha.js'
 import { registry, executionQueue, log, setup } from './common-run.js'
 
 async function runMocha () {
-  // mocha@8 exports what we want, mocha@7 sets a global
-  const mochaLocal = mochaExport
+  const mochaLocal = globalThis.mocha
   mochaLocal.setup({ reporter: registry.argv.mochaReporter, ui: 'bdd' })
   // mocha@7 deprecated useColors()
   if (typeof mochaLocal.color === 'function') {

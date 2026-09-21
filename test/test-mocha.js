@@ -19,15 +19,15 @@ for (const type of ['cjs', 'esm']) {
     this.timeout(60000)
     const expectedTemplate = `
   test suite 1
-    ✅ test case 1
-    ✅ test case 2
+    ✔ test case 1
+    ✔ test case 2
 
   test suite 2 - worker
-    ✅ is WORKER
+    ✔ is WORKER
 
   test suite 3
-    ✅ test case 1
-    ✅ test case 2
+    ✔ test case 1
+    ✔ test case 2
 `
 
     it('should run in page', async () => {
@@ -106,7 +106,7 @@ for (const type of ['cjs', 'esm']) {
     this.timeout(60000)
     const expectedTemplate = `
   test suite 1 - worker
-    ✅ is WORKER
+    ✔ is WORKER
 
   test suite 2 - failing
     1) should fail
