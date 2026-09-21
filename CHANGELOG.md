@@ -1,3 +1,9 @@
+## [3.3.0](https://github.com/rvagg/polendina/compare/v3.2.26...v3.3.0) (2026-09-21)
+
+### Features
+
+* **mocha:** support mocha@12 while maintaining 11 support ([#201](https://github.com/rvagg/polendina/issues/201)) ([0d05415](https://github.com/rvagg/polendina/commit/0d05415be4faeac5e53d378b87a1ac787c27a58f))
+
 ## [3.2.26](https://github.com/rvagg/polendina/compare/v3.2.25...v3.2.26) (2026-07-30)
 
 ### Bug Fixes
