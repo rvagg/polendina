@@ -8,12 +8,7 @@ import { registry, executionQueue, log, setup } from './common-run.js'
 async function runMocha () {
   const mochaLocal = globalThis.mocha
   mochaLocal.setup({ reporter: registry.argv.mochaReporter, ui: 'bdd' })
-  // mocha@7 deprecated useColors()
-  if (typeof mochaLocal.color === 'function') {
-    mochaLocal.color(true)
-  } else if (typeof mochaLocal.useColors === 'function') {
-    mochaLocal.useColors(true)
-  }
+  mochaLocal.color(true)
 
   // the well-behaved reporters, like spec, are easy to intercept
   mochaLocal.constructor.reporters.Base.consoleLog = log.info
