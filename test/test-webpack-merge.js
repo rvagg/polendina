@@ -14,7 +14,7 @@ WOOP is set
 `
     const { stdout, stderr, code } = await runCli('bare', webpackMergeFixture, ['--runner=bare-sync', '--webpack-config', 'webpack.config.js'])
     if (code !== 0) {
-      console.error(stderr)
+      console.error(stdout, stderr)
     }
     assert.strictEqual(code, 0, 'exited with zero exit code')
     if (!stdout.includes(expected)) {

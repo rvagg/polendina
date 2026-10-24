@@ -14,6 +14,6 @@ describe('test suite 1', () => {
   })
 
   it('test case 3', () => {
-    assert.strictEqual(raw, 'raw fixture\n')
+    assert.strictEqual(raw, 'raw fixture')
   })
 })

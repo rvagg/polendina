@@ -35,7 +35,7 @@ ok 5 all good
     it('should run in page', async () => {
       const { stdout, stderr, code } = await runCli('tape', tapeFixture, ['--runner=tape'])
       if (code !== 0) {
-        console.error(stderr)
+        console.error(stdout, stderr)
       }
       assert.strictEqual(code, 0, 'exited with zero exit code')
       const expected = expectedTemplate.replace(/WORKER/, 'not in worker')
@@ -49,7 +49,7 @@ ok 5 all good
     it('should run in worker', async () => {
       const { stdout, stderr, code } = await runCli('tape', tapeFixture, ['--runner=tape', '--worker', '--page=false'])
       if (code !== 0) {
-        console.error(stderr)
+        console.error(stdout, stderr)
       }
       assert.strictEqual(code, 0, 'exited with zero exit code')
       const expected = expectedTemplate.replace(/WORKER/, 'in worker')
@@ -63,7 +63,7 @@ ok 5 all good
     it('should run in serviceworker', async () => {
       const { stdout, stderr, code } = await runCli('tape', tapeFixture, ['--runner=tape', '--serviceworker', '--page=false'])
       if (code !== 0) {
-        console.error(stderr)
+        console.error(stdout, stderr)
       }
       assert.strictEqual(code, 0, 'exited with zero exit code')
       const expected = expectedTemplate.replace(/WORKER/, 'in serviceworker')
@@ -77,7 +77,7 @@ ok 5 all good
     it('should run in page, worker and serviceworker', async () => {
       const { stdout, stderr, code } = await runCli('tape', tapeFixture, ['--runner=tape', '--worker', '--serviceworker'])
       if (code !== 0) {
-        console.error(stderr)
+        console.error(stdout, stderr)
       }
       assert.strictEqual(code, 0, 'exited with zero exit code')
 

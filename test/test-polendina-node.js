@@ -25,7 +25,7 @@ Took X seconds
 `
       const { stdout, stderr, code } = await runNodeCli('bare', bareSyncFixture, 'bare-sync')
       if (code !== 0) {
-        console.error(stderr)
+        console.error(stdout, stderr)
       }
       assert.strictEqual(code, 0, 'exited with zero exit code')
       assert.strictEqual(removeTiming(stdout), expected)
@@ -60,7 +60,7 @@ Took X seconds
 `
       const { stdout, stderr, code } = await runNodeCli('bare', bareAsyncFixture, 'bare-async')
       if (code !== 0) {
-        console.error(stderr)
+        console.error(stdout, stderr)
       }
       assert.strictEqual(code, 0, 'exited with zero exit code')
       assert.strictEqual(removeTiming(stdout), expected)
