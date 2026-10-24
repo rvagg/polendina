@@ -1,18 +1,5 @@
 {
   "name": "fixture-bare-async",
   "version": "1.0.0",
-  "description": "test fixture",
-  "main": "index.js",
-  "scripts": {
-    "test": "node test-1.js && node test-2.js"
-  },
-  "author": "Rod <rod@vagg.org> (http://r.va.gg/)",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/rvagg/polendina.git"
-  },
-  "license": "Apache-2.0",
-  "devDependencies": {
-    "chai": "^6.0.1"
-  }
+  "private": true
 }

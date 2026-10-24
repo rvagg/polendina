@@ -1,12 +1,8 @@
 /* globals describe it */
 
 import assert from 'assert'
-import path from 'path'
-import { fileURLToPath } from 'url'
 import { runCli } from './common.js'
-
-const __dirname = fileURLToPath(path.dirname(import.meta.url))
-const webpackMergeFixture = path.join(__dirname, 'fixtures/webpack-merge')
+const webpackMergeFixture = 'webpack-merge'
 
 describe('basic webpack-merge', function () {
   this.timeout(60000)
@@ -16,7 +12,7 @@ assert.ok() is a function
 WOOP is set
   ✔ test.js
 `
-    const { stdout, stderr, code } = await runCli(webpackMergeFixture, '--runner=bare-sync --webpack-config webpack.config.js')
+    const { stdout, stderr, code } = await runCli('bare', webpackMergeFixture, ['--runner=bare-sync', '--webpack-config', 'webpack.config.js'])
     if (code !== 0) {
       console.error(stderr)
     }
@@ -35,7 +31,7 @@ assert.ok() is a function
 `
     const expectedStderr = 'WOOP is not defined'
 
-    const { stdout, stderr, code } = await runCli(webpackMergeFixture, '--runner=bare-sync')
+    const { stdout, stderr, code } = await runCli('bare', webpackMergeFixture, ['--runner=bare-sync'])
     assert.strictEqual(code, 1, 'exited with zero exit code')
     assert.ok(stdout.includes(expectedStdout), 'stdout contains expected test output')
     assert.ok(stderr.includes(expectedStderr), 'stderr contains expected test output')

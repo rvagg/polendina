@@ -26,9 +26,8 @@
   },
   "scripts": {
     "lint": "standard",
-    "test:install": "for f in $(cd test/fixtures/; ls); do (cd test/fixtures/$f && grep devDependencies package.json > /dev/null && npm i --no-audit --no-fund --no-package-lock) || true; done",
-    "test:run": "npm_config_yes=true npx mocha test/test-*.js",
-    "test": "npm run lint && npm run test:install && npm run test:run"
+    "test:run": "npx --yes mocha --require test/setup.js test/test-*.js",
+    "test": "npm run lint && npm run test:run"
   },
   "repository": {
     "type": "git",

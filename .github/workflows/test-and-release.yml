@@ -19,9 +19,7 @@ jobs:
         run: |
           npm install --no-progress
       - name: Run tests
-        run: |
-          npm config set script-shell bash
-          npm test
+        run: npm test
   release:
     name: Release
     needs: test

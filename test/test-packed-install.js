@@ -1,87 +1,47 @@
-/* globals describe it before after */
+/* globals describe it */
 
-// Installs polendina from a packed tarball into a consumer outside this
-// repository and runs the CLI there. npm hoists polendina's dependencies into
-// the consumer's node_modules, a layout the in-repo fixtures never produce.
+// setup.js installs polendina from a packed tarball into consumers outside
+// this repository; check that layout is the hoisted one a real install has
+// and that each consumer carries only its own runner
 
 import assert from 'assert'
 import fs from 'fs'
-import os from 'os'
 import path from 'path'
-import { exec, execFile } from 'child_process'
-import { fileURLToPath } from 'url'
+import { consumers } from './common.js'
 
-const __dirname = fileURLToPath(path.dirname(import.meta.url))
-const root = path.join(__dirname, '..')
-const puppeteerVersion = JSON.parse(fs.readFileSync(path.join(root, 'node_modules/puppeteer/package.json'))).version
-
-function sh (command, cwd) {
-  return new Promise((resolve, reject) => {
-    exec(command, { cwd, env: { ...process.env, PUPPETEER_SKIP_DOWNLOAD: '1' } }, (err, stdout, stderr) => {
-      if (err) {
-        return reject(new Error(`${command}\n${stderr}`))
-      }
-      resolve(stdout.toString())
-    })
-  })
-}
-
-function cli (cwd, args) {
-  return new Promise((resolve) => {
-    const bin = path.join(cwd, 'node_modules/polendina/polendina-cli.js')
-    execFile(process.execPath, [bin, ...args], { cwd }, (err, stdout, stderr) => {
-      resolve({ code: err ? err.code : 0, stdout: stdout.toString(), stderr: stderr.toString() })
-    })
-  })
-}
+const present = (dir, ...segments) => fs.promises.access(path.join(dir, ...segments))
+const absent = (dir, ...segments) => assert.rejects(present(dir, ...segments))
 
 describe('packed install', function () {
-  this.timeout(300000)
-  let consumer
-
-  before(async () => {
-    consumer = await fs.promises.mkdtemp(path.join(os.tmpdir(), 'polendina-consumer-'))
-    const [{ filename }] = JSON.parse(await sh(`npm pack --json --pack-destination "${consumer}"`, root))
-    await fs.promises.writeFile(path.join(consumer, 'package.json'), JSON.stringify({ name: 'consumer', version: '1.0.0', private: true }))
-    await fs.promises.writeFile(path.join(consumer, 'test-tape.js'), `
-      const tape = require('tape')
-      tape('packed', (t) => { t.ok(true, 'runs'); t.end() })
-    `)
-    await fs.promises.writeFile(path.join(consumer, 'test-mocha.js'), `
-      /* globals describe it */
-      describe('packed', () => { it('runs', () => { if (!true) throw new Error('nope') }) })
-    `)
-    await sh(`npm install --no-audit --no-fund --no-package-lock --prefer-offline "./${filename}" tape mocha puppeteer@${puppeteerVersion}`, consumer)
-  })
-
-  after(async () => {
-    if (consumer) {
-      await fs.promises.rm(consumer, { recursive: true, force: true })
+  it('hoists polendina dependencies into every consumer tree', async () => {
+    for (const dir of Object.values(consumers())) {
+      await absent(dir, 'node_modules/polendina/node_modules/stream-browserify')
+      await present(dir, 'node_modules/stream-browserify')
     }
   })
 
-  it('hoists dependencies', async () => {
-    await assert.rejects(fs.promises.access(path.join(consumer, 'node_modules/polendina/node_modules/stream-browserify')))
-    await fs.promises.access(path.join(consumer, 'node_modules/stream-browserify'))
+  it('installs each runner only in its own consumer', async () => {
+    const { mocha, mocha11, tape, bare } = consumers()
+    await present(mocha, 'node_modules/mocha')
+    await present(mocha11, 'node_modules/mocha')
+    await present(tape, 'node_modules/tape')
+    await absent(mocha, 'node_modules/tape')
+    await absent(tape, 'node_modules/mocha')
+    await absent(bare, 'node_modules/mocha')
+    await absent(bare, 'node_modules/tape')
   })
 
-  it('runs tape', async () => {
-    const { code, stdout, stderr } = await cli(consumer, ['--runner=tape', '--cleanup', 'test-tape.js'])
-    if (code !== 0) {
-      console.error(stdout, stderr)
-    }
-    assert.strictEqual(code, 0, 'exited with zero exit code')
-    assert.strictEqual(stderr, '', 'no stderr')
-    assert.ok(stdout.includes('ok 1 runs'), 'stdout contains tape output')
+  it('installs the previous mocha major in its consumer', async () => {
+    const { mocha, mocha11 } = consumers()
+    const major = (dir) => JSON.parse(fs.readFileSync(path.join(dir, 'node_modules/mocha/package.json'))).version.split('.')[0]
+    assert.strictEqual(major(mocha11), '11')
+    assert.notStrictEqual(major(mocha), '11')
   })
 
-  it('runs mocha', async () => {
-    const { code, stdout, stderr } = await cli(consumer, ['--cleanup', 'test-mocha.js'])
-    if (code !== 0) {
-      console.error(stdout, stderr)
+  it('does not install mocha or tape in polendina itself', async () => {
+    for (const dir of Object.values(consumers())) {
+      await absent(dir, 'node_modules/polendina/node_modules/mocha')
+      await absent(dir, 'node_modules/polendina/node_modules/tape')
     }
-    assert.strictEqual(code, 0, 'exited with zero exit code')
-    assert.strictEqual(stderr, '', 'no stderr')
-    assert.ok(stdout.includes('1 passing'), 'stdout contains mocha output')
   })
 })

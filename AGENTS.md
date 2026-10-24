@@ -102,8 +102,9 @@ Files:
   `index.html` and `page-run.js` are served static. `common-run.js`,
   `test-registry.cjs` and one of `mocha-run.js`, `tape-run.js`, `bare-run.js`
   are bundled as the last entry.
-- `test/` runs the CLI against `test/fixtures/*`, one real standalone package
-  per runner, in CJS and ESM, passing and failing.
+- `test/` packs polendina, installs it into temporary consumers outside the
+  repo, one per runner, and runs the CLI against `test/fixtures/*` from
+  inside them, one fixture per runner, in CJS and ESM, passing and failing.
 
 ### The deferral trick
 
@@ -132,9 +133,13 @@ believing it.
 
 Things that look wrong and are not. Each exists because something broke.
 
-- **`resolve.modules` and `resolveLoader.modules` list `process.cwd()` first,
-  polendina's `node_modules` second.** The consumer's mocha, tape and chai must
-  win. polendina has no mocha or tape in its own tree, on purpose.
+- **`resolve.modules` and `resolveLoader.modules` list the relative
+  `node_modules` first, polendina's own `node_modules` second.** The relative
+  entry walks up from the requesting file as Node does, so the consumer's
+  mocha, tape and chai win and hoisted or nested dependencies resolve from a
+  workspace package or any subdirectory. An absolute `cwd/node_modules` here
+  does not walk and breaks both. polendina has no mocha or tape in its own
+  tree, on purpose.
 - **Tape gets `resolve.fallback` for `stream` and `path`, `fs: false`, and
   `ProvidePlugin({ process })`.** Webpack 5 dropped Node core polyfills.
   Mocha's browser bundle is self-contained; tape's is not. `process`,
@@ -167,12 +172,22 @@ Things that look wrong and are not. Each exists because something broke.
   enumeration would otherwise see the wrong keys.
 - **`polendina-cli` exits with the mocha failure count; `polendina-node` exits
   0 or 1.** The first matches mocha's own behaviour. Keep both.
-- **`test:install` is a bash loop that `npm i`s every fixture with
-  `--no-package-lock`, and CI sets `script-shell bash` for Windows.** Each
-  fixture is a real package with its own devDependencies so the suite proves
-  fence one. mocha and tape must never become devDependencies of the root
-  package: they would land in polendina's `node_modules` and silently mask a
-  broken consumer resolve. `test:run` uses `npx mocha` for the same reason.
+- **The test frameworks live in `test/consumer/package.json`, not the root
+  package, and `test:run` uses `npx --yes mocha`.** mocha and tape must never
+  become devDependencies of the root package: they would land in polendina's
+  `node_modules` and silently mask a broken consumer resolve. That file is
+  the one place dependabot bumps them; it is never installed as is. The flag,
+  not an `npm_config_yes=` prefix, because npm scripts run under cmd.exe on
+  Windows and a `VAR=value` prefix is not a command there.
+- **One consumer per runner, never one consumer with every framework.** Tape
+  and polendina both depend on `readable-stream`. Installed together with
+  mocha, npm nests whichever versions clash and the fixtures run on a tree no
+  real consumer has. Each consumer installs only what its runner's fixtures
+  import.
+- **Fixture `package.json` files declare only a name and, for ESM, a
+  `type`.** Their dependencies come from the consumer they are copied into.
+  The webpack-merge fixture's config `require('webpack')` finds the hoisted
+  copy there, as a real consumer's would.
 - **`test/common.js` asserts empty stderr on success and always passes
   `--cleanup`.** Any stray warning is a test failure. Fixtures stay clean
   between runs only because of the flag.
@@ -212,13 +227,22 @@ green matrix is a Node.js interop issue, not a flaky test.
 ## Testing polendina itself
 
 ```bash
-npm test                     # lint, install fixtures, run the matrix (slow)
-npm run test:install         # once, after a fixture package.json changes
-npx mocha test/test-mocha.js # one runner's suite
-npx mocha test/test-packed-install.js   # the real install layout, needs a warm npm cache
-cd test/fixtures/mocha && ../../../polendina-cli.js --cleanup test-*.js   # by hand
-cd test/fixtures/mocha && ../../../polendina-cli.js test-*.js --stats     # keep build/ to inspect
+npm test                                                  # lint and the whole matrix
+npx mocha --require test/setup.js test/test-mocha.js      # one runner's suite
+POLENDINA_KEEP_CONSUMERS=1 npx mocha --require test/setup.js test/test-tape.js   # keep the consumers to poke at
+cd test/fixtures/mocha && ../../../polendina-cli.js test-*.js --stats     # by hand, in-repo layout, keep build/
 ```
+
+`test/setup.js` is a mocha global fixture. It packs the working tree, writes
+a `package.json` per consumer, installs the tarball with that consumer's
+frameworks into a temporary directory, copies `test/fixtures` in, and removes
+everything afterwards. Its `variants` table maps a consumer name to the
+packages it installs: `mocha` and `bare` take chai, `tape` takes tape,
+`mocha11` pins the previous mocha major. Bare names take their version range
+from `test/consumer/package.json`. Each suite names the consumer it runs in
+when it calls `runCli`. The installs run in parallel from the npm cache with
+the Chrome that puppeteer already downloaded for the root install, so they
+need a warm cache and take well under a minute.
 
 ### Install topologies
 
@@ -230,30 +254,34 @@ test setup covers all three cases.
 
 | Topology | polendina's own `node_modules` | What it hides |
 |----------|-------------------------------|---------------|
-| Fixtures in this repo | The dev tree, two directories up | Fixtures can walk up and find polendina's dev dependencies. A missing fixture dependency, or any package added to the root, is silently masked. This is why mocha and tape must never be root dependencies. |
+| Fixtures run in this repo by hand | The dev tree, two directories up | Fixtures can walk up and find polendina's dev dependencies. A missing dependency, or any package added to the root, is silently masked. Fine for poking at a bundle, proves nothing about resolution. |
 | Symlinked working copy in a consumer | polendina's own full tree, separate from the consumer's | Two complete trees, no hoisting, no version contention. Cleaner than any real install. Will not reproduce a hoisting break. |
-| Published install in a consumer | Mostly absent: dependencies are hoisted into the consumer's flat tree | Anything that assumes a file exists under `polendina/node_modules/` breaks. Version conflicts between polendina's dependencies and the consumer's resolve by npm nesting and are then found by `resolve.modules` in whichever order npm left them. This is reality. |
+| Published install in a consumer | Mostly absent: dependencies are hoisted into the consumer's flat tree | Anything that assumes a file exists under `polendina/node_modules/` breaks. Version conflicts between polendina's dependencies and the consumer's resolve by npm nesting and are then found by `resolve.modules` in whichever order npm left them. This is reality, and it is what the suite runs in. |
 
 Consequences:
 
-- A resolution change passing the fixture suite proves little on its own.
-  `test/test-packed-install.js` covers the published layout for tape and
-  mocha; extend it when a change touches resolution.
 - Never reference polendina's own `node_modules` by path. Resolve through
   Node from a file inside polendina so it works wherever npm put the package.
-- The `webpack-merge` fixture resolves `webpack` by walking up to polendina's
-  tree, which stands in for a real consumer with no webpack of their own.
-  That is the fixture topology leaking, and it happens to match reality
-  because webpack is hoisted.
+- The fixtures sit in a subdirectory of the consumer, so the suite also
+  stands in for a workspace package whose dependencies are hoisted to a
+  parent. Module resolution must walk up.
+- `test/test-packed-install.js` asserts the layout itself: polendina's
+  dependencies hoisted, each framework present only in its own consumer,
+  mocha and tape absent from polendina's own tree.
 
 Rules the suite relies on:
 
-- polendina is tested the way it is used: as a CLI run from inside a consumer
-  directory. Do not import `polendina.js` into tests to make them faster.
-- Fixture `package.json` files are real and own their test framework.
+- polendina is tested the way it is used: as a CLI installed from a tarball
+  and run from inside a consumer directory. Do not import `polendina.js` into
+  tests to make them faster.
+- The mocha spec reporter's pass symbol differs between majors in the
+  browser bundle, so mocha expectations take the tick from a per-consumer
+  table rather than a literal.
 - Every runner has a passing and a failing fixture, in CJS and ESM. A new
-  runner or mode adds all four. A new code path in an existing runner adds an
-  assertion to the existing fixtures rather than a new fixture.
+  runner or mode adds all four, a row in `variants` with its framework, and
+  that framework in `test/consumer/package.json`. A new code path in an
+  existing runner adds an assertion to the existing fixtures rather than a
+  new fixture.
 - Expected output is matched as exact multi-line strings with timings
   scrubbed. When output changes on purpose, update the expectation and say so
   in the PR.
@@ -293,14 +321,6 @@ Good work, roughly in order of value:
   commented-out `page.on('console')` block is dead. The `useColors` branch is
   unreachable on supported mochas. Each removal is one PR with a full test run
   and a `git log -S` showing where it came from.
-- **Move the fixtures into the packed consumer.** `test/test-packed-install.js`
-  already packs polendina and installs it into a temporary consumer outside
-  the repo, the only layout a real user has. Running the existing fixture
-  directories from inside that consumer would replace seventeen `npm i` runs
-  and seventeen dependabot entries with one install, close the topology leak
-  for every test, and make a second consumer on the previous mocha major
-  cheap. The fixtures and their assertions stay as they are; only where they
-  run changes.
 - **Make failures legible.** When a resolve fails inside a consumer's
   dependency, the webpack error is the user's only clue. Better messages
   around bundle errors and the timeout are cheap wins.
