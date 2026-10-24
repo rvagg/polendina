@@ -1,15 +1,11 @@
 /* globals describe it */
 
 import assert from 'assert'
-import path from 'path'
-import { fileURLToPath } from 'url'
 import { runCli } from './common.js'
 
-const __dirname = fileURLToPath(path.dirname(import.meta.url))
-
 for (const type of ['cjs', 'esm']) {
-  const tapeFixture = path.join(__dirname, `fixtures/tape${type === 'esm' ? '-esm' : ''}`)
-  const tapeFailureFixture = path.join(__dirname, `fixtures/tape-failure${type === 'esm' ? '-esm' : ''}`)
+  const tapeFixture = `tape${type === 'esm' ? '-esm' : ''}`
+  const tapeFailureFixture = `tape-failure${type === 'esm' ? '-esm' : ''}`
 
   describe(`basic tape (${type})`, function () {
     this.timeout(60000)
@@ -37,7 +33,7 @@ ok 5 all good
 `
 
     it('should run in page', async () => {
-      const { stdout, stderr, code } = await runCli(tapeFixture, '--runner=tape')
+      const { stdout, stderr, code } = await runCli('tape', tapeFixture, ['--runner=tape'])
       if (code !== 0) {
         console.error(stderr)
       }
@@ -51,7 +47,7 @@ ok 5 all good
     })
 
     it('should run in worker', async () => {
-      const { stdout, stderr, code } = await runCli(tapeFixture, '--runner=tape --worker --page=false')
+      const { stdout, stderr, code } = await runCli('tape', tapeFixture, ['--runner=tape', '--worker', '--page=false'])
       if (code !== 0) {
         console.error(stderr)
       }
@@ -65,7 +61,7 @@ ok 5 all good
     })
 
     it('should run in serviceworker', async () => {
-      const { stdout, stderr, code } = await runCli(tapeFixture, '--runner=tape --serviceworker --page=false')
+      const { stdout, stderr, code } = await runCli('tape', tapeFixture, ['--runner=tape', '--serviceworker', '--page=false'])
       if (code !== 0) {
         console.error(stderr)
       }
@@ -79,7 +75,7 @@ ok 5 all good
     })
 
     it('should run in page, worker and serviceworker', async () => {
-      const { stdout, stderr, code } = await runCli(tapeFixture, '--runner=tape --worker --serviceworker')
+      const { stdout, stderr, code } = await runCli('tape', tapeFixture, ['--runner=tape', '--worker', '--serviceworker'])
       if (code !== 0) {
         console.error(stderr)
       }
@@ -131,7 +127,7 @@ not ok 2 bork
 `
 
     it('should fail in page', async () => {
-      let { stdout, code } = await runCli(tapeFailureFixture, '--runner=tape')
+      let { stdout, code } = await runCli('tape', tapeFailureFixture, ['--runner=tape'])
       assert.strictEqual(code, 1, 'exited with non-zero exit code')
       stdout = stdout.replace(/^ +at .*\n/gm, '') // stack traces
       const expected = expectedTemplate.replace(/WORKER/, 'not in worker')
@@ -143,7 +139,7 @@ not ok 2 bork
     })
 
     it('should fail in worker', async () => {
-      let { stdout, code } = await runCli(tapeFailureFixture, '--runner=tape --worker --page=false')
+      let { stdout, code } = await runCli('tape', tapeFailureFixture, ['--runner=tape', '--worker', '--page=false'])
       assert.strictEqual(code, 1, 'exited with non-zero exit code')
       stdout = stdout.replace(/^ +at .*\n/gm, '') // stack traces
       const expected = expectedTemplate.replace(/WORKER/, 'in worker')
@@ -155,7 +151,7 @@ not ok 2 bork
     })
 
     it('should fail in serviceworker', async () => {
-      let { stdout, code } = await runCli(tapeFailureFixture, '--runner=tape --serviceworker --page=false')
+      let { stdout, code } = await runCli('tape', tapeFailureFixture, ['--runner=tape', '--serviceworker', '--page=false'])
       assert.strictEqual(code, 1, 'exited with non-zero exit code')
       stdout = stdout.replace(/^ +at .*\n/gm, '') // stack traces
       const expected = expectedTemplate.replace(/WORKER/, 'in serviceworker')
@@ -167,7 +163,7 @@ not ok 2 bork
     })
 
     it('should fail in page and not run in worker', async () => {
-      let { stdout, code } = await runCli(tapeFailureFixture, '--runner=tape --worker')
+      let { stdout, code } = await runCli('tape', tapeFailureFixture, ['--runner=tape', '--worker'])
       assert.strictEqual(code, 1, 'exited with non-zero exit code')
       stdout = stdout.replace(/^ +at .*\n/gm, '') // stack traces
       const expected = expectedTemplate.replace(/WORKER/, 'not in worker')

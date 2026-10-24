@@ -1,0 +1,11 @@
+{
+  "name": "polendina-test-consumer",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Version ranges for the test frameworks that test/setup.js installs, one runner per temporary consumer, alongside a packed polendina",
+  "devDependencies": {
+    "chai": "^6.0.1",
+    "mocha": "^12.0.2",
+    "tape": "^5.6.3"
+  }
+}

@@ -1,19 +1,6 @@
 {
   "name": "fixture-tape",
   "version": "1.0.0",
-  "description": "test fixture",
-  "main": "index.js",
-  "type": "module",
-  "scripts": {
-    "test": "tape test.js"
-  },
-  "author": "Rod <rod@vagg.org> (http://r.va.gg/)",
-  "license": "Apache-2.0",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/rvagg/polendina.git"
-  },
-  "devDependencies": {
-    "tape": "^5.6.3"
-  }
+  "private": true,
+  "type": "module"
 }

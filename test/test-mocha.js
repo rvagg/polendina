@@ -1,37 +1,37 @@
 /* globals describe it */
 
 import assert from 'assert'
-import path from 'path'
-import { fileURLToPath } from 'url'
 import { runCli } from './common.js'
-
-const __dirname = fileURLToPath(path.dirname(import.meta.url))
 
 function removeTimings (stdout) {
   return stdout.replace(/\(\d+ms\)/g, '(Xms)')
 }
 
-for (const type of ['cjs', 'esm']) {
-  const mochaFixture = path.join(__dirname, `fixtures/mocha${type === 'esm' ? '-esm' : ''}`)
-  const mochaFailureFixture = path.join(__dirname, `fixtures/mocha-failure${type === 'esm' ? '-esm' : ''}`)
+// the consumers to run against, with the spec reporter's pass symbol, which
+// differs by major in the browser bundle
+const ticks = { mocha: '\u2714', mocha11: '\u2705' }
 
-  describe(`basic mocha (${type})`, function () {
+for (const [consumerName, type] of Object.keys(ticks).flatMap((c) => ['cjs', 'esm'].map((t) => [c, t]))) {
+  const mochaFixture = `mocha${type === 'esm' ? '-esm' : ''}`
+  const mochaFailureFixture = `mocha-failure${type === 'esm' ? '-esm' : ''}`
+
+  describe(`basic mocha (${type}, ${consumerName})`, function () {
     this.timeout(60000)
     const expectedTemplate = `
   test suite 1
-    ✔ test case 1
-    ✔ test case 2
+    ${ticks[consumerName]} test case 1
+    ${ticks[consumerName]} test case 2
 
   test suite 2 - worker
-    ✔ is WORKER
+    ${ticks[consumerName]} is WORKER
 
   test suite 3
-    ✔ test case 1
-    ✔ test case 2
+    ${ticks[consumerName]} test case 1
+    ${ticks[consumerName]} test case 2
 `
 
     it('should run in page', async () => {
-      const { stdout, stderr, code } = await runCli(mochaFixture)
+      const { stdout, stderr, code } = await runCli(consumerName, mochaFixture, [])
       if (code !== 0) {
         console.error(stderr)
       }
@@ -45,7 +45,7 @@ for (const type of ['cjs', 'esm']) {
     })
 
     it('should run in worker', async () => {
-      const { stdout, stderr, code } = await runCli(mochaFixture, '--worker --page=false')
+      const { stdout, stderr, code } = await runCli(consumerName, mochaFixture, ['--worker', '--page=false'])
       if (code !== 0) {
         console.error(stderr)
       }
@@ -59,7 +59,7 @@ for (const type of ['cjs', 'esm']) {
     })
 
     it('should run in serviceworker', async () => {
-      const { stdout, stderr, code } = await runCli(mochaFixture, '--serviceworker --page=false')
+      const { stdout, stderr, code } = await runCli(consumerName, mochaFixture, ['--serviceworker', '--page=false'])
       if (code !== 0) {
         console.error(stderr)
       }
@@ -73,7 +73,7 @@ for (const type of ['cjs', 'esm']) {
     })
 
     it('should run in page, worker and serviceworker', async () => {
-      const { stdout, stderr, code } = await runCli(mochaFixture, '--worker --serviceworker')
+      const { stdout, stderr, code } = await runCli(consumerName, mochaFixture, ['--worker', '--serviceworker'])
       if (code !== 0) {
         console.error(stderr)
       }
@@ -102,11 +102,11 @@ for (const type of ['cjs', 'esm']) {
     })
   })
 
-  describe(`failing mocha (${type})`, function () {
+  describe(`failing mocha (${type}, ${consumerName})`, function () {
     this.timeout(60000)
     const expectedTemplate = `
   test suite 1 - worker
-    ✔ is WORKER
+    ${ticks[consumerName]} is WORKER
 
   test suite 2 - failing
     1) should fail
@@ -121,7 +121,7 @@ for (const type of ['cjs', 'esm']) {
 `
 
     it('should fail in page', async () => {
-      let { stdout, code } = await runCli(mochaFailureFixture)
+      let { stdout, code } = await runCli(consumerName, mochaFailureFixture, [])
       assert.strictEqual(code, 1, 'exited with non-zero exit code')
       stdout = removeTimings(stdout)
       const expected = expectedTemplate.replace(/WORKER/, 'not in worker')
@@ -133,7 +133,7 @@ for (const type of ['cjs', 'esm']) {
     })
 
     it('should fail in worker', async () => {
-      let { stdout, code } = await runCli(mochaFailureFixture, '--worker --page=false')
+      let { stdout, code } = await runCli(consumerName, mochaFailureFixture, ['--worker', '--page=false'])
       assert.strictEqual(code, 1, 'exited with non-zero exit code')
       stdout = removeTimings(stdout)
       const expected = expectedTemplate.replace(/WORKER/, 'in worker')
@@ -145,7 +145,7 @@ for (const type of ['cjs', 'esm']) {
     })
 
     it('should fail in serviceworker', async () => {
-      let { stdout, code } = await runCli(mochaFailureFixture, '--serviceworker --page=false')
+      let { stdout, code } = await runCli(consumerName, mochaFailureFixture, ['--serviceworker', '--page=false'])
       assert.strictEqual(code, 1, 'exited with non-zero exit code')
       stdout = removeTimings(stdout)
       const expected = expectedTemplate.replace(/WORKER/, 'in serviceworker')
@@ -157,7 +157,7 @@ for (const type of ['cjs', 'esm']) {
     })
 
     it('should fail in page and not run in worker', async () => {
-      let { stdout, code } = await runCli(mochaFailureFixture, '--worker')
+      let { stdout, code } = await runCli(consumerName, mochaFailureFixture, ['--worker'])
       assert.strictEqual(code, 1, 'exited with non-zero exit code')
       stdout = removeTimings(stdout)
       const expected = expectedTemplate.replace(/WORKER/, 'not in worker')
