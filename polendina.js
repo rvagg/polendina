@@ -3,6 +3,7 @@ import path from 'path'
 import fs from 'fs'
 import http from 'http'
 import { fileURLToPath } from 'url'
+import { createRequire } from 'module'
 import st from 'st'
 import { rimraf } from 'rimraf'
 import _webpack from 'webpack'
@@ -13,6 +14,9 @@ import { webpackConfig } from './lib/webpack.config.js'
 const webpack = promisify(_webpack)
 
 const __dirname = fileURLToPath(path.dirname(import.meta.url))
+// polendina's own dependencies are found via Node resolution from this file,
+// not by path: in a consumer install npm hoists them out of ./node_modules
+const require = createRequire(import.meta.url)
 
 export class Polendina {
   constructor (options) {
@@ -44,14 +48,14 @@ export class Polendina {
       config = merge(config, {
         resolve: {
           fallback: {
-            stream: path.join(__dirname, 'node_modules', 'stream-browserify'),
-            path: path.join(__dirname, 'node_modules', 'path-browserify'),
+            stream: require.resolve('stream-browserify'),
+            path: require.resolve('path-browserify'),
             fs: false
           }
         },
         plugins: [
           new webpack.ProvidePlugin({
-            process: 'process/browser'
+            process: require.resolve('process/browser')
           })
         ]
       })
