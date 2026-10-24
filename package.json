@@ -26,7 +26,7 @@
   },
   "scripts": {
     "lint": "standard",
-    "test:run": "npm_config_yes=true npx mocha --require test/setup.js test/test-*.js",
+    "test:run": "npx --yes mocha --require test/setup.js test/test-*.js",
     "test": "npm run lint && npm run test:run"
   },
   "repository": {

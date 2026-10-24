@@ -173,10 +173,12 @@ Things that look wrong and are not. Each exists because something broke.
 - **`polendina-cli` exits with the mocha failure count; `polendina-node` exits
   0 or 1.** The first matches mocha's own behaviour. Keep both.
 - **The test frameworks live in `test/consumer/package.json`, not the root
-  package, and `test:run` uses `npx mocha`.** mocha and tape must never
+  package, and `test:run` uses `npx --yes mocha`.** mocha and tape must never
   become devDependencies of the root package: they would land in polendina's
   `node_modules` and silently mask a broken consumer resolve. That file is
-  the one place dependabot bumps them; it is never installed as is.
+  the one place dependabot bumps them; it is never installed as is. The flag,
+  not an `npm_config_yes=` prefix, because npm scripts run under cmd.exe on
+  Windows and a `VAR=value` prefix is not a command there.
 - **One consumer per runner, never one consumer with every framework.** Tape
   and polendina both depend on `readable-stream`. Installed together with
   mocha, npm nests whichever versions clash and the fixtures run on a tree no
