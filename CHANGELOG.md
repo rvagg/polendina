@@ -1,3 +1,9 @@
+## [3.3.4](https://github.com/rvagg/polendina/compare/v3.3.3...v3.3.4) (2026-10-24)
+
+### Trivial Changes
+
+* remove dead code, document and test raw-loader ([#206](https://github.com/rvagg/polendina/issues/206)) ([3ce94c0](https://github.com/rvagg/polendina/commit/3ce94c02208d72e8c174d6607bc30266e2ad69aa))
+
 ## [3.3.3](https://github.com/rvagg/polendina/compare/v3.3.2...v3.3.3) (2026-10-24)
 
 ### Tests
