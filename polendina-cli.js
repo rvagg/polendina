@@ -52,12 +52,6 @@ const argv = yargs(hideBin(process.argv))
     describe: 'Number of seconds to wait before auto-failing the test suite',
     default: 30
   })
-  .option('coverage', {
-    type: 'boolean',
-    describe: 'Enable coverage reporting',
-    default: false,
-    hidden: true
-  })
   .option('webpack-config', {
     type: 'string',
     describe: 'Supply a path to a webpack.config.js to merge into Polendina\'s Webpack config (use with caution)',

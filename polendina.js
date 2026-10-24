@@ -132,7 +132,7 @@ export class Polendina {
       server.on('error', reject)
       server.listen(() => {
         const port = server.address().port
-        puppeteer(this.outputDir, port, this._options.timeout, mode, this._options.runner, this._options.coverage)
+        puppeteer(this.outputDir, port, this._options.timeout, mode, this._options.runner)
           .then((errors) => {
             server.close(() => {
               if (this._options.runner !== 'mocha') {

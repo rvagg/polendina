@@ -25,7 +25,7 @@ testing bare fixture subdir
     it('should run in page', async () => {
       const { stdout, stderr, code } = await runCli('bare', bareAsyncFixture, ['--runner=bare-async'])
       if (code !== 0) {
-        console.error(stderr)
+        console.error(stdout, stderr)
       }
       assert.strictEqual(code, 0, 'exited with zero exit code')
       const expected = expectedTemplate.replace(/WORKER/, 'not in worker')
@@ -39,7 +39,7 @@ testing bare fixture subdir
     it('should run in worker', async () => {
       const { stdout, stderr, code } = await runCli('bare', bareAsyncFixture, ['--runner=bare-async', '--worker', '--page=false'])
       if (code !== 0) {
-        console.error(stderr)
+        console.error(stdout, stderr)
       }
       assert.strictEqual(code, 0, 'exited with zero exit code')
       const expected = expectedTemplate.replace(/WORKER/, 'in worker')
@@ -53,7 +53,7 @@ testing bare fixture subdir
     it('should run in serviceworker', async () => {
       const { stdout, stderr, code } = await runCli('bare', bareAsyncFixture, ['--runner=bare-async', '--serviceworker', '--page=false'])
       if (code !== 0) {
-        console.error(stderr)
+        console.error(stdout, stderr)
       }
       assert.strictEqual(code, 0, 'exited with zero exit code')
       const expected = expectedTemplate.replace(/WORKER/, 'in serviceworker')
@@ -67,7 +67,7 @@ testing bare fixture subdir
     it('should run in page, worker and serviceworker', async () => {
       const { stdout, stderr, code } = await runCli('bare', bareAsyncFixture, ['--runner=bare-async', '--worker', '--serviceworker'])
       if (code !== 0) {
-        console.error(stderr)
+        console.error(stdout, stderr)
       }
       assert.strictEqual(code, 0, 'exited with zero exit code')
 

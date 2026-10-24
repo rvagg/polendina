@@ -65,6 +65,9 @@ Real usage, in increasing order of involvement. Each shape must keep working:
 - `polendina --runner=bare-async test/test.js` paired with
   `polendina-node bare-async test/test.js`. The same files run in Node.js and
   the browser with no test framework at all.
+- `import hex from '!!raw-loader!./fixtures/block.hex'` inside a test to read a
+  fixture as a string. Binary and hex fixture suites do this, declaring no
+  loader of their own.
 - `polendina --cleanup --webpack-config test/webpack.config.js test/test-*.js`
   where the config is `export default { externals: { standard: 'null' } }`.
   `js-ipld-schema` does this to stop webpack bundling a Node-only
@@ -149,8 +152,13 @@ Things that look wrong and are not. Each exists because something broke.
   `polendina/node_modules` directory.
 - **`import 'mocha/mocha.js'` for side effect, then `globalThis.mocha`.**
   Mocha 11 ships UMD, 12 ships ESM. The global is the common denominator.
-  Both are supported at once. The `color()` / `useColors()` branch is the
-  same idea for older mochas.
+  Both are supported at once.
+- **`raw-loader` is a dependency that no polendina source references.**
+  Consumers load fixture files as text with
+  `import hex from '!!raw-loader!./fixtures/block.hex'` and declare nothing; the
+  loader resolves from polendina's tree through `resolveLoader.modules`. The
+  mocha fixtures assert it. Removing it or the second `resolveLoader` entry
+  breaks those consumers.
 - **`exprContextCritical: false`.** Mocha's bundle has a dynamic
   `require.resolve`; without this every run prints a webpack warning.
 - **`resolve.tsconfig: false`.** Webpack 5.109+ on Node 22.6+ follows a
@@ -160,9 +168,8 @@ Things that look wrong and are not. Each exists because something broke.
   forward-slashed.** Tests in subdirectories and Windows paths both broke the
   cwd-relative version. Three separate fixes landed here. Paths in
   `wrap-loader.cjs` are the most common regression site in the repo.
-- **`puppeteer.launch({ args: ['--no-sandbox'], headless: 'new' })`.**
-  `--no-sandbox` for root in Docker and CI. `'new'` was a Puppeteer 20
-  deprecation fix and is itself a candidate for removal on current Puppeteer.
+- **`puppeteer.launch({ args: ['--no-sandbox'] })`.** `--no-sandbox` for
+  root in Docker and CI. Headless is Puppeteer's default and is not named.
 - **`st({ cache: false })`.** A stale cached bundle between page, worker and
   serviceworker runs on Windows.
 - **`setTimeout(...).unref()` for `--timeout`.** A clean finish must not be
@@ -316,11 +323,16 @@ Good work, roughly in order of value:
 
 - **Keep the matrix green.** Pick up a red dependabot PR, find the fallout,
   land the fix with the bump. This is the single most useful thing.
-- **Remove dead weight with evidence.** `raw-loader` is a dependency no source
-  references. The `--coverage` flag and the `pti` TODO have never shipped. The
-  commented-out `page.on('console')` block is dead. The `useColors` branch is
-  unreachable on supported mochas. Each removal is one PR with a full test run
-  and a `git log -S` showing where it came from.
+- **Remove dead weight with evidence.** A flag that never shipped, a branch
+  unreachable on supported versions. Each removal is one PR with a full test
+  run and a `git log -S` showing where it came from. A dependency with no
+  reference in this repo is not evidence on its own: `raw-loader` is used
+  only from consumers' inline loader strings. Search the consumers first.
+- **Make dynamic `import()` work in Worker and ServiceWorker modes.** Webpack
+  splits each one into a chunk and loads it through a script tag, which only
+  a page has. `module.parser.javascript.dynamicImportMode: 'eager'` would
+  inline them into the single bundle; the mocha fixtures' raw-loader case
+  would then pass as a dynamic import in all three scopes.
 - **Make failures legible.** When a resolve fails inside a consumer's
   dependency, the webpack error is the user's only clue. Better messages
   around bundle errors and the timeout are cheap wins.

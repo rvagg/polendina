@@ -20,6 +20,7 @@
   * [bare-sync](#bare-sync)
   * [bare-async](#bare-async)
 * [TypeScript support (and other Webpack extensions)](#typescript-support-and-other-webpack-extensions)
+* [Loading fixture files](#loading-fixture-files)
 * [polendina-node: the minimal Node.js test runner](#polendina-node-the-minimal-nodejs-test-runner)
 * [Minimising Puppeteer's size](#minimising-puppeteers-size)
   * [Global and npx](#global-and-npx)
@@ -186,6 +187,16 @@ module.exports = {
 ```sh
 $ polendina --cleanup test/*.spec.ts --webpack-config webpack.config.ts.js
 ```
+
+## Loading fixture files
+
+polendina bundles [raw-loader](https://ghub.io/raw-loader) so a test can read a fixture file as a string without any configuration, using webpack's inline loader syntax:
+
+```js
+import hex from '!!raw-loader!./fixtures/block.hex'
+```
+
+The leading `!!` stops any other loader from touching the file. In a CommonJS test the string is on `require('!!raw-loader!./fixtures/block.hex').default`. A dynamic `import()` works too, but only in page mode: webpack loads it as a separate chunk through a script tag, which Workers and ServiceWorkers do not have.
 
 
 ## `polendina-node`: the minimal Node.js test runner

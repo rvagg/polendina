@@ -26,12 +26,10 @@ export const log = {
     executionQueue(() => globalThis.polendinaLog(['info', logSeq++].concat(args)))
     return executionQueue
   },
-  // TODO
   warn: (...args) => {
     executionQueue(() => globalThis.polendinaLog(['warn', logSeq++].concat(args)))
     return executionQueue
   },
-  // TODO
   error: (...args) => {
     executionQueue(() => globalThis.polendinaLog(['error', logSeq++].concat(args)))
     return executionQueue
@@ -87,7 +85,6 @@ function setupLogging () {
     log.info.apply(null, args)
   }
 
-  // TODO: differentiate
   console.warn = log.warn
   console.error = log.error
 }
