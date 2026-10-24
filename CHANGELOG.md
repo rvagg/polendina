@@ -1,3 +1,9 @@
+## [3.3.3](https://github.com/rvagg/polendina/compare/v3.3.2...v3.3.3) (2026-10-24)
+
+### Tests
+
+* run fixtures from a packed install in temporary consumers ([#205](https://github.com/rvagg/polendina/issues/205)) ([d1601fc](https://github.com/rvagg/polendina/commit/d1601fcc94b50bb6192629173500b85443a405f2))
+
 ## [3.3.2](https://github.com/rvagg/polendina/compare/v3.3.1...v3.3.2) (2026-10-24)
 
 ### Bug Fixes
