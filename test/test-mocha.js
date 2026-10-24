@@ -21,6 +21,7 @@ for (const [consumerName, type] of Object.keys(ticks).flatMap((c) => ['cjs', 'es
   test suite 1
     ${ticks[consumerName]} test case 1
     ${ticks[consumerName]} test case 2
+    ${ticks[consumerName]} test case 3
 
   test suite 2 - worker
     ${ticks[consumerName]} is WORKER
