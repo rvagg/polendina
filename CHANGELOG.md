@@ -1,3 +1,13 @@
+## [3.3.2](https://github.com/rvagg/polendina/compare/v3.3.1...v3.3.2) (2026-10-24)
+
+### Bug Fixes
+
+* **tape:** resolve browser polyfills via createRequire, not by path ([#203](https://github.com/rvagg/polendina/issues/203)) ([f1441cf](https://github.com/rvagg/polendina/commit/f1441cfd77b2f4dc76f8f302abf0143f8e60d7fa))
+
+### Trivial Changes
+
+* add agent context files ([#204](https://github.com/rvagg/polendina/issues/204)) ([e822ab3](https://github.com/rvagg/polendina/commit/e822ab366f6b9a6ade72ab2e93ca08952b23e56a))
+
 ## [3.3.1](https://github.com/rvagg/polendina/compare/v3.3.0...v3.3.1) (2026-10-19)
 
 ### Trivial Changes
