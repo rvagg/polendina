@@ -239,6 +239,20 @@ Running polendina with npm's [`npx`](https://github.com/npm/npx) tool (i.e. run 
 
 If you install polendina as a global (`npm install polendina -g`) then `npx` will even find it from there, avoiding the need to install a copy in the npm cache and you get a `polendina` executable as a bonus.
 
+## Releases
+
+Release-please maintains a version and changelog PR from conventional commits.
+Merges to `master` run CI, not publication. rvagg's private maintainer command
+freezes the prepared PR, verifies its exact-head CI, merges it and creates the
+protected `vMAJOR.MINOR.PATCH` tag.
+
+The tag workflow tests and packs without publishing credentials. A separate
+publishing job uses a commit-pinned [Waxseal](https://github.com/rvagg/waxseal)
+action to validate and attest the tarball, publish through npm trusted
+publishing (OIDC), and attach the same tarball to an immutable GitHub release.
+Do not bump the generated version or changelog manually. Commit conventions are
+in [the contributor guide](AGENTS.md#commits-and-pull-requests).
+
 ## License and Copyright
 
 Copyright 2019 Rod Vagg
