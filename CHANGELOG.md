@@ -4,6 +4,13 @@
 
 * remove dead code, document and test raw-loader ([#206](https://github.com/rvagg/polendina/issues/206)) ([3ce94c0](https://github.com/rvagg/polendina/commit/3ce94c02208d72e8c174d6607bc30266e2ad69aa))
 
+## [3.3.5](https://github.com/rvagg/polendina/compare/v3.3.4...v3.3.5) (2026-10-28)
+
+
+### Trivial Changes
+
+* replace shared workflows and harden release automation ([#207](https://github.com/rvagg/polendina/issues/207)) ([13ab689](https://github.com/rvagg/polendina/commit/13ab68956a58dc3398d8d9fad041e7e7f8769a5c))
+
 ## [3.3.3](https://github.com/rvagg/polendina/compare/v3.3.2...v3.3.3) (2026-10-24)
 
 ### Tests
