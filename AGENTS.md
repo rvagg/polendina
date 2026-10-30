@@ -170,6 +170,12 @@ Things that look wrong and are not. Each exists because something broke.
   `wrap-loader.cjs` are the most common regression site in the repo.
 - **`puppeteer.launch({ args: ['--no-sandbox'] })`.** `--no-sandbox` for
   root in Docker and CI. Headless is Puppeteer's default and is not named.
+- **`ensureBrowser()` runs puppeteer's `install.mjs` when Chrome is
+  missing.** npm 12 blocks dependency install scripts unless the consumer
+  lists them in `allowScripts`, so puppeteer's postinstall never downloads a
+  browser. The installer writes to stderr so stdout stays faithful. The root
+  `allowScripts` entry covers polendina's own install, whose Chrome cache the
+  test consumers share.
 - **`st({ cache: false })`.** A stale cached bundle between page, worker and
   serviceworker runs on Windows.
 - **`setTimeout(...).unref()` for `--timeout`.** A clean finish must not be
@@ -209,6 +215,7 @@ What breaks, where it breaks, how it gets fixed. Expect each of these again.
 | Webpack minor or major | `lib/webpack.config.js`, `polendina.js` | A resolution default changes or a polyfill vanishes. Fix with a config key, not a loader. |
 | Puppeteer major | `lib/puppeteer.js` | Launch option deprecations. Usually a one-line change or nothing. |
 | Node.js current | `polendina-node-cli.js`, anything ESM | Interop changes surface first on the `current` CI leg. |
+| npm major | `test/setup.js`, `lib/puppeteer.js` | CLI JSON shapes and install defaults change. Arrives with Node.js current. |
 | Any dependency going ESM-only | import sites | Named imports (`{ glob }`, `{ rimraf }`, `{ merge }`, `hideBin`). |
 | Output ordering | `lib/log.js`, `resources/common-run.js`, `lib/puppeteer.js` | Shows up only on Windows and macOS CI as interleaved output. Reproduce there before changing anything. |
 | Path separators | `lib/wrap-loader.cjs` | Windows. Normalise to forward slashes at the point of string generation. |

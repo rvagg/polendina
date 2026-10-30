@@ -76,7 +76,8 @@ async function installConsumer (name, tarball, packages) {
 
 export async function mochaGlobalSetup () {
   const packDir = await fs.promises.mkdtemp(path.join(os.tmpdir(), 'polendina-pack-'))
-  const [{ filename }] = JSON.parse(await sh(`npm pack --json --pack-destination "${packDir}"`, root))
+  // npm 12 reports an object keyed by package name, earlier versions an array
+  const [{ filename }] = Object.values(JSON.parse(await sh(`npm pack --json --pack-destination "${packDir}"`, root)))
   const tarball = path.join(packDir, filename)
   await Promise.all(Object.entries(variants).map(async ([name, packages]) => {
     consumers[name] = await installConsumer(name, tarball, packages)
