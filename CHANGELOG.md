@@ -4,6 +4,20 @@
 
 * remove dead code, document and test raw-loader ([#206](https://github.com/rvagg/polendina/issues/206)) ([3ce94c0](https://github.com/rvagg/polendina/commit/3ce94c02208d72e8c174d6607bc30266e2ad69aa))
 
+## [3.3.6](https://github.com/rvagg/polendina/compare/v3.3.5...v3.3.6) (2026-10-30)
+
+
+### Bug Fixes
+
+* install Chrome at launch when npm blocked puppeteer's postinstall ([#213](https://github.com/rvagg/polendina/issues/213)) ([8c490a9](https://github.com/rvagg/polendina/commit/8c490a9a5315d935bcbd557956bd4c84161a071f))
+
+
+### Trivial Changes
+
+* **ci:** upgrade waxseal to v0.1.1 ([#209](https://github.com/rvagg/polendina/issues/209)) ([47e6600](https://github.com/rvagg/polendina/commit/47e66001eebacee74a7ec6d3717b648e10cc2125))
+* **ci:** upgrade waxseal to v0.2.0 ([#212](https://github.com/rvagg/polendina/issues/212)) ([fcd12d1](https://github.com/rvagg/polendina/commit/fcd12d1cc14c05408109ff1c8be00ec584327373))
+* **deps:** bump actions/upload-artifact from 7.0.1 to 7.0.2 ([#211](https://github.com/rvagg/polendina/issues/211)) ([8866036](https://github.com/rvagg/polendina/commit/886603605573110e2188aad09e4c203a1c63bba1))
+
 ## [3.3.5](https://github.com/rvagg/polendina/compare/v3.3.4...v3.3.5) (2026-10-28)
 
 
