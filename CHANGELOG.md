@@ -4,6 +4,13 @@
 
 * remove dead code, document and test raw-loader ([#206](https://github.com/rvagg/polendina/issues/206)) ([3ce94c0](https://github.com/rvagg/polendina/commit/3ce94c02208d72e8c174d6607bc30266e2ad69aa))
 
+## [3.3.8](https://github.com/rvagg/polendina/compare/v3.3.7...v3.3.8) (2026-11-03)
+
+
+### Trivial Changes
+
+* **deps:** bump rvagg/waxseal from 0.2.1 to 0.2.3 ([#217](https://github.com/rvagg/polendina/issues/217)) ([a0a7f83](https://github.com/rvagg/polendina/commit/a0a7f8369df57dc430f8e32d79f05d95f0ff2f4c))
+
 ## [3.3.7](https://github.com/rvagg/polendina/compare/v3.3.6...v3.3.7) (2026-11-02)
 
 
