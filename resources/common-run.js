@@ -103,4 +103,7 @@ export async function setup () {
   }
 
   setupLogging()
+  if (inPage && typeof globalThis.polendinaReady === 'function') {
+    await globalThis.polendinaReady()
+  }
 }

@@ -1,0 +1,7 @@
+<!doctype html>
+<link rel="icon" href="data:,">
+<script>
+  const script = document.createElement('script')
+  script.src = new URLSearchParams(location.search).get('script')
+  document.head.appendChild(script)
+</script>

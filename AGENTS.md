@@ -28,10 +28,13 @@ Everything else follows from it. Judge every change against these, in order:
 3. **Faithful terminal output.** Browser output must look like native mocha or
    tape output, in order, with the same exit code. The test suite asserts this
    by string equality on stdout. Output ordering bugs are real bugs.
-4. **Page, Worker and ServiceWorker are peers.** Every runner works in all
-   three, selected by flag. Every fixture asserts which scope it is in.
-5. **Library testing, not UI testing.** No screenshots, no DOM assertions, no
-   coverage. The browser is a runtime, not a subject.
+4. **Page, Worker and ServiceWorker are peers for bundled library tests.**
+   Every runner works in all three, selected by flag. Consumer-supplied pages
+   use page mode and mocha only. Every fixture asserts which scope it is in.
+5. **Library testing first, with bounded page testing.** A consumer may supply
+   its own static page with `--static` and `--page-url` to test how its code
+   loads and behaves there. Tests use browser APIs and the consumer's assertions;
+   polendina adds no DOM helpers, input simulation, screenshots or coverage.
 6. **Ride the ecosystem's current majors.** Caret ranges and dependabot
    updates. The cost is the bitrot section below; the benefit is current
    Chrome and webpack for consumers.
@@ -88,6 +91,9 @@ CLI (yargs) -> Polendina.build()  webpack: test files + <runner>-run.js -> build
             -> Polendina.run()    for each mode: st serves build/, Puppeteer loads index.html
                                   page-run.js picks page | Worker | ServiceWorker, loads bundle.js
                                   <runner>-run.js drains the test registry, runs, reports
+                                  with --static and --page-url: st serves the consumer at /
+                                  and build/ at /__polendina/; Puppeteer loads the consumer page,
+                                  injects bundle.js after load, then runs mocha
                                   exposeFunction channel -> lib/log.js -> stdout
             -> cleanup()          rimraf build/
 ```
@@ -176,6 +182,13 @@ Things that look wrong and are not. Each exists because something broke.
   browser. The installer writes to stderr so stdout stays faithful. The root
   `allowScripts` entry covers polendina's own install, whose Chrome cache the
   test consumers share.
+- **Consumer-page injection sets `script.charset = 'utf-8'`.** Classic scripts
+  inherit the document encoding unless told otherwise. A page using a legacy
+  encoding would corrupt Unicode test literals and mocha output. The native
+  modules and the injected bundle must agree on UTF-8.
+- **Consumer-page runners await `polendinaReady()` before loading tests.**
+  Node ends startup request monitoring before acknowledging readiness, so test
+  modules can inspect expected HTTP errors and network failures themselves.
 - **`st({ cache: false })`.** A stale cached bundle between page, worker and
   serviceworker runs on Windows.
 - **`setTimeout(...).unref()` for `--timeout`.** A clean finish must not be
@@ -355,7 +368,8 @@ Work to avoid:
 
 - Any change that makes the consumer add a file or a flag to get what they
   get today, or that removes an override they rely on.
-- Adding a second browser, UI testing, screenshots or coverage.
+- UI testing tools (DOM helpers, input simulation, screenshots), a second
+  browser, coverage.
 - Pinning dependencies to dodge a break. Fix the break.
 - Adding mocha or tape to the root package in any form.
 - Rewriting the output channel for elegance. It is shaped by CI on three
