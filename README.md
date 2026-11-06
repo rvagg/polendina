@@ -1,6 +1,6 @@
 # polendina
 
-**Non-UI browser testing for JavaScript libraries from the command-line**
+**Browser testing for JavaScript libraries and static pages from the command-line**
 
 > At the words, the door opened and a dapper little old man came in. His name was Geppetto, but to the boys of the neighborhood he was Polendina, on account of the wig he always wore which was just the color of yellow corn.
 >
@@ -14,6 +14,7 @@
 * [Usage](#usage)
   * [Options](#options)
 * [Examples](#examples)
+* [Testing a static page](#testing-a-static-page)
 * [Test runners](#test-runners)
   * [Mocha](#mocha)
   * [Tape](#tape)
@@ -49,7 +50,7 @@ Using `mocha test/*.spec.js && polendina --cleanup test/*.spec.js` as the test s
 
 ![demo.png](demo.png)
 
-Even though polendina is intended for "non-UI" testing, your tests run in a standard browser environment so the UI isn't out of bounds if need it.
+Tests run in a standard browser environment. To exercise your own HTML, styles and native modules, supply a [static page](#testing-a-static-page).
 
 ## Usage
 
@@ -62,6 +63,8 @@ Even though polendina is intended for "non-UI" testing, your tests run in a stan
  * `--page`: Run tests in standard browser page (default: "true")
  * `--worker`: Run tests in a WebWorker (default: "false")
  * `--serviceworker`: Run tests in a ServiceWorker (default: "false")
+ * `--static`: Directory to serve at `/`, relative to the current directory. Requires `--page-url`, page mode and the mocha runner.
+ * `--page-url`: Same-origin path to load before injecting the tests, such as `/site/`. Requires `--static`; query strings and fragments are preserved.
  * `--stats`: Write webpack-stats.json with bundle; written to the `output-dir` so will be removed if `--cleanup` is specified (default: "false")
  * `--cleanup`: Remove the `output-dir` after execution (default: "false")
  * `--timeout`: Number of seconds to wait before auto-failing the test suite (default: "30")
@@ -87,6 +90,37 @@ Run a bare synchronous test file (tests are executed as soon as the file is load
 ```
 polendina --runner=bare-sync test.js
 ```
+
+## Testing a static page
+
+Serve your project and run mocha tests inside its actual page:
+
+```sh
+polendina --static . --page-url '/site/?view=diagnostic#example' --cleanup test/site-test.js
+```
+
+Chrome loads the page's HTML, stylesheets and native JavaScript modules. After
+the page's `load` event, polendina injects the webpack-bundled tests and runs
+mocha as usual. Tests can inspect and interact with the page using browser APIs.
+If the application initialises asynchronously, tests must await its readiness.
+
+Interact through the DOM or globals exposed by the page. Importing application
+modules from a test creates a separate webpack copy, not the native module
+instance running in the page.
+
+During startup, failed requests and HTTP responses with status 400 or higher
+fail the run and name the resource URL. Startup monitoring ends when the
+injected runner receives acknowledgement from Node, before it loads test
+modules. Tests can then inspect expected HTTP errors and failed requests.
+Startup failures include favicon requests; supply an icon or add
+`<link rel="icon" href="data:,">` to the page. Uncaught page errors fail the run
+through completion. `--timeout` covers navigation, injection and the tests.
+
+The path must begin with a single `/`, and navigation must finish on the local
+server's origin. polendina reserves `/__polendina/` for its build resources.
+Reloads and navigation after injection discard the tests; fragment changes work
+in place. These options support page mode and mocha only, so combining them
+with `--worker`, `--serviceworker` or another runner is an error.
 
 ## Test runners
 

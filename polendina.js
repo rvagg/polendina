@@ -115,34 +115,61 @@ export class Polendina {
     return rimraf(this.outputDir)
   }
 
-  _executeMode (mode) {
-    const mount = st({
+  async _closeServer (server) {
+    if (!server.listening) {
+      return
+    }
+    await new Promise((resolve, reject) => {
+      server.close((err) => err ? reject(err) : resolve())
+    })
+  }
+
+  async _executeMode (mode) {
+    const outputMount = st({
       path: this.outputDir,
+      index: 'index.html',
+      url: this._options.static ? '/__polendina/' : '/',
+      cache: false
+    })
+    const staticMount = this._options.static && st({
+      path: path.resolve(process.cwd(), this._options.static),
       index: 'index.html',
       url: '/',
       cache: false
     })
-    return new Promise((resolve, reject) => {
-      const server = http.createServer((req, res) => {
-        mount(req, res, () => {
-          res.statusCode = 404
-          res.end('Nope')
-        })
-      })
-      server.on('error', reject)
-      server.listen(() => {
-        const port = server.address().port
-        puppeteer(this.outputDir, port, this._options.timeout, mode, this._options.runner)
-          .then((errors) => {
-            server.close(() => {
-              if (this._options.runner !== 'mocha') {
-                console.log() // whitespace pls
-              }
-              resolve(errors)
-            })
-          })
-          .catch(reject)
+    const server = http.createServer((req, res) => {
+      const mount = staticMount && req.url.startsWith('/__polendina/')
+        ? outputMount
+        : staticMount || outputMount
+      mount(req, res, () => {
+        res.statusCode = 404
+        res.end('Nope')
       })
     })
+
+    try {
+      await new Promise((resolve, reject) => {
+        server.once('error', reject)
+        server.listen(() => {
+          server.off('error', reject)
+          resolve()
+        })
+      })
+      const port = server.address().port
+      const errors = await puppeteer(
+        this.outputDir,
+        port,
+        this._options.timeout,
+        mode,
+        this._options.runner,
+        this._options.pageUrl
+      )
+      if (this._options.runner !== 'mocha') {
+        console.log() // whitespace pls
+      }
+      return errors
+    } finally {
+      await this._closeServer(server)
+    }
   }
 }

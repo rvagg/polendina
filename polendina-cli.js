@@ -52,6 +52,16 @@ const argv = yargs(hideBin(process.argv))
     describe: 'Number of seconds to wait before auto-failing the test suite',
     default: 30
   })
+  .option('static', {
+    type: 'string',
+    describe: 'Serve a directory at / with --page-url (page mode and mocha only)',
+    requiresArg: true
+  })
+  .option('page-url', {
+    type: 'string',
+    describe: 'Load a same-origin page path from --static before running mocha tests',
+    requiresArg: true
+  })
   .option('webpack-config', {
     type: 'string',
     describe: 'Supply a path to a webpack.config.js to merge into Polendina\'s Webpack config (use with caution)',
@@ -75,6 +85,23 @@ const argv = yargs(hideBin(process.argv))
     if (!argv.outputDir) {
       throw new Error('--output-dir required')
     }
+    if (argv.static !== undefined || argv.pageUrl !== undefined) {
+      if (!argv.static || !argv.pageUrl) {
+        throw new Error('--static and --page-url require each other')
+      }
+      if (!argv.page || argv.worker || argv.serviceworker) {
+        throw new Error('--static and --page-url require page mode only')
+      }
+      if (argv.runner !== 'mocha') {
+        throw new Error('--static and --page-url require --runner=mocha')
+      }
+      const origin = 'http://localhost'
+      if (!argv.pageUrl.startsWith('/') ||
+          argv.pageUrl.startsWith('//') ||
+          new URL(argv.pageUrl, origin).origin !== origin) {
+        throw new Error('--page-url must be a same-origin path starting with a single /')
+      }
+    }
     return true
   })
   .argv
@@ -89,11 +116,14 @@ const argv = yargs(hideBin(process.argv))
     log(`Created stats: ${polendina.statsFile} ...`)
   }
 
-  const errors = await polendina.run()
-
-  if (argv.cleanup) {
-    log(`Removing output directory: ${polendina.outputDir}`)
-    await polendina.cleanup()
+  let errors
+  try {
+    errors = await polendina.run()
+  } finally {
+    if (argv.cleanup) {
+      log(`Removing output directory: ${polendina.outputDir}`)
+      await polendina.cleanup()
+    }
   }
 
   let time = (Date.now() - start) / 1000
