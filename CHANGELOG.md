@@ -4,6 +4,23 @@
 
 * remove dead code, document and test raw-loader ([#206](https://github.com/rvagg/polendina/issues/206)) ([3ce94c0](https://github.com/rvagg/polendina/commit/3ce94c02208d72e8c174d6607bc30266e2ad69aa))
 
+## [3.4.0](https://github.com/rvagg/polendina/compare/v3.3.8...v3.4.0) (2026-11-07)
+
+
+### Features
+
+* test a consumer's page with --static and --page-url ([25db6e4](https://github.com/rvagg/polendina/commit/25db6e482fa8eb3b594bb160097f85d6d7cdfc46))
+
+
+### Bug Fixes
+
+* redirect page directories and clarify browser failures ([93dbf7d](https://github.com/rvagg/polendina/commit/93dbf7d7508994f226be554fabd5d324ae843edc))
+
+
+### Tests
+
+* remove request-timing race from navigation timeout check ([#221](https://github.com/rvagg/polendina/issues/221)) ([89e0f4a](https://github.com/rvagg/polendina/commit/89e0f4ae548915750b06a20322ec3d1e2910590d))
+
 ## [3.3.8](https://github.com/rvagg/polendina/compare/v3.3.7...v3.3.8) (2026-11-03)
 
 

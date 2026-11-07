@@ -1,6 +1,6 @@
 {
   "name": "polendina",
-  "version": "3.3.8",
+  "version": "3.4.0",
   "description": "Browser testing for JavaScript libraries and static pages from the command-line",
   "main": "polendina.js",
   "type": "module",
