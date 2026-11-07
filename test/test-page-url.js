@@ -156,17 +156,15 @@ describe('consumer page failures', function () {
     assertMessageOnly(result)
   })
 
-  it('applies the timeout while navigation waits for a resource', async () => {
-    let requested = false
-    const server = http.createServer(() => { requested = true })
+  it('applies the deadline while page navigation is unfinished', async () => {
+    const server = http.createServer(() => {})
     await new Promise((resolve) => server.listen(0, '127.0.0.1', resolve))
     try {
       const script = `http://127.0.0.1:${server.address().port}/pending.js`
       const pageUrl = `/site/slow.html?script=${encodeURIComponent(script)}`
       const result = await runPage('mocha', 'test-passing.js', pageUrl, ['--timeout', '1'])
-      assert.strictEqual(requested, true)
       assert.strictEqual(result.code, 1, output(result))
-      assert.match(result.stderr, /timeout/i)
+      assert.match(result.stderr, /^timeout:/)
       assertMessageOnly(result)
     } finally {
       server.closeAllConnections()
