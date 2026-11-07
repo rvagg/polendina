@@ -104,6 +104,9 @@ the page's `load` event, polendina injects the webpack-bundled tests and runs
 mocha as usual. Tests can inspect and interact with the page using browser APIs.
 If the application initialises asynchronously, tests must await its readiness.
 
+Directory URLs such as `/site` redirect to `/site/` with status 301, preserving
+the query string so relative assets resolve from the directory.
+
 Interact through the DOM or globals exposed by the page. Importing application
 modules from a test creates a separate webpack copy, not the native module
 instance running in the page.
@@ -116,11 +119,15 @@ Startup failures include favicon requests; supply an icon or add
 `<link rel="icon" href="data:,">` to the page. Uncaught page errors fail the run
 through completion. `--timeout` covers navigation, injection and the tests.
 
+Expected startup and timeout failures print their message. Page exceptions also
+include the page's own stack; unexpected failures retain their Node.js stack.
+
 The path must begin with a single `/`, and navigation must finish on the local
 server's origin. polendina reserves `/__polendina/` for its build resources.
-Reloads and navigation after injection discard the tests; fragment changes work
-in place. These options support page mode and mocha only, so combining them
-with `--worker`, `--serviceworker` or another runner is an error.
+Reloads and navigation after the initial load fail the run and name the
+destination; fragment changes work in place. These options support page mode
+and mocha only, so combining them with `--worker`, `--serviceworker` or another
+runner is an error.
 
 ## Test runners
 

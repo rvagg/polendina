@@ -5,6 +5,7 @@ import yargs from 'yargs'
 import { hideBin } from 'yargs/helpers'
 import { log } from './lib/log.js'
 import { Polendina } from './polendina.js'
+import { PageError } from './lib/page-error.js'
 
 const start = Date.now()
 const argv = yargs(hideBin(process.argv))
@@ -140,7 +141,7 @@ const argv = yargs(hideBin(process.argv))
   }
 })()
   .catch((err) => {
-    console.error(err.stack || err)
+    console.error(err instanceof PageError ? err.message : err.stack || err)
     if (err.details) {
       console.error(err.details)
     }

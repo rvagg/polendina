@@ -124,6 +124,35 @@ export class Polendina {
     })
   }
 
+  _redirectDirectory (req, res, dir, next) {
+    if (req.method !== 'GET' && req.method !== 'HEAD') {
+      return next()
+    }
+    let url
+    let pathname
+    try {
+      url = new URL(req.url, 'http://localhost')
+      pathname = decodeURIComponent(url.pathname).replace(/\\/g, '/')
+    } catch {
+      return next()
+    }
+    if (url.pathname.endsWith('/') || url.pathname.startsWith('//') || /(^|\/)\./.test(pathname)) {
+      return next()
+    }
+    const filename = path.resolve(dir, '.' + pathname)
+    const relative = path.relative(dir, filename)
+    if (relative === '..' || relative.startsWith('..' + path.sep) || path.isAbsolute(relative)) {
+      return next()
+    }
+    fs.stat(filename, (err, stat) => {
+      if (err || !stat.isDirectory()) {
+        return next()
+      }
+      res.writeHead(301, { Location: `${url.pathname}/${url.search}` })
+      res.end()
+    })
+  }
+
   async _executeMode (mode) {
     const outputMount = st({
       path: this.outputDir,
@@ -131,8 +160,9 @@ export class Polendina {
       url: this._options.static ? '/__polendina/' : '/',
       cache: false
     })
-    const staticMount = this._options.static && st({
-      path: path.resolve(process.cwd(), this._options.static),
+    const staticDir = this._options.static && path.resolve(process.cwd(), this._options.static)
+    const staticMount = staticDir && st({
+      path: staticDir,
       index: 'index.html',
       url: '/',
       cache: false
@@ -141,10 +171,15 @@ export class Polendina {
       const mount = staticMount && req.url.startsWith('/__polendina/')
         ? outputMount
         : staticMount || outputMount
-      mount(req, res, () => {
+      const serve = () => mount(req, res, () => {
         res.statusCode = 404
         res.end('Nope')
       })
+      if (mount === staticMount) {
+        this._redirectDirectory(req, res, staticDir, serve)
+      } else {
+        serve()
+      }
     })
 
     try {
