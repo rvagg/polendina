@@ -106,7 +106,7 @@ Files:
 - `lib/webpack.config.js` the one webpack config. `lib/wrap-loader.cjs` the
   pitch loader that defers test execution. `lib/puppeteer.js` launches
   Chrome, wires the output channel, owns the timeout. `lib/log.js` sequenced
-  stdout.
+  stdout. `lib/page-error.js` identifies deliberate browser-run failures.
 - `resources/` is copied verbatim into the output dir at build time.
   `index.html` and `page-run.js` are served static. `common-run.js`,
   `test-registry.cjs` and one of `mocha-run.js`, `tape-run.js`, `bare-run.js`
@@ -189,6 +189,12 @@ Things that look wrong and are not. Each exists because something broke.
 - **Consumer-page runners await `polendinaReady()` before loading tests.**
   Node ends startup request monitoring before acknowledging readiness, so test
   modules can inspect expected HTTP errors and network failures themselves.
+- **Static directory redirects preserve the URL path and query.** Existing
+  directories gain a trailing slash before relative assets load. Dotfile and
+  traversal paths are left to `st`'s access checks.
+- **`PageError` identifies deliberate browser-run failures.** The CLI prints
+  their messages and any original page stack. Unexpected errors retain their
+  Node.js stacks.
 - **`st({ cache: false })`.** A stale cached bundle between page, worker and
   serviceworker runs on Windows.
 - **`setTimeout(...).unref()` for `--timeout`.** A clean finish must not be
